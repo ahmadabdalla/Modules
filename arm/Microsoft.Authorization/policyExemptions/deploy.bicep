@@ -52,7 +52,7 @@ var policyExemptionProperties_var = {
   expiresOn: (empty(expiresOn) ? json('null') : expiresOn)
 }
 
-module policyExemption_mg './.bicep/nested_policyexemptions_mg.bicep' = if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
+module policyExemption_mg './.bicep/nested_policyExemptions_mg.bicep' = if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
   name: '${policyExemptionName_var}-mg'
   scope: managementGroup(managementGroupId)
   params: {
@@ -63,7 +63,7 @@ module policyExemption_mg './.bicep/nested_policyexemptions_mg.bicep' = if (!emp
   }
 }
 
-module policyExemption_sub './.bicep/nested_policyexemptions_sub.bicep' = if (empty(managementGroupId) && !empty(subscriptionId) && empty(resourceGroupName)) {
+module policyExemption_sub './.bicep/nested_policyExemptions_sub.bicep' = if (empty(managementGroupId) && !empty(subscriptionId) && empty(resourceGroupName)) {
   name: '${policyExemptionName_var}-sub'
   scope: subscription(subscriptionId)
   params: {
@@ -74,7 +74,7 @@ module policyExemption_sub './.bicep/nested_policyexemptions_sub.bicep' = if (em
   }
 }
 
-module policyExemption_rg './.bicep/nested_policyexemptions_rg.bicep' = if (empty(managementGroupId) && !empty(resourceGroupName) && !empty(subscriptionId)) {
+module policyExemption_rg './.bicep/nested_policyExemptions_rg.bicep' = if (empty(managementGroupId) && !empty(resourceGroupName) && !empty(subscriptionId)) {
   name: '${policyExemptionName_var}-rg'
   scope: resourceGroup(subscriptionId, resourceGroupName)
   params: {
