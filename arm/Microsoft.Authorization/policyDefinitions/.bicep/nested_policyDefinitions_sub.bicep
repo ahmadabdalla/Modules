@@ -1,14 +1,27 @@
 targetScope = 'subscription'
 param policyDefinitionName string
-param policyDefinitionProperties object
-param subscriptionId string = subscription().id
+param displayName string = ''
+param policyDescription string = ''
+param mode string = 'All'
+param metadata object = {}
+param parameters object = {}
+param policyRule object
+param subscriptionId string = ''
 param location string = deployment().location
 
 resource policyDefinition 'Microsoft.Authorization/policyDefinitions@2020-09-01' = {
   name: policyDefinitionName
   location: location
-  properties: policyDefinitionProperties
+  properties: {
+    policyType: 'Custom'
+    mode: mode
+    displayName: (empty(displayName) ? json('null') : displayName)
+    description: (empty(policyDescription) ? json('null') : policyDescription)
+    metadata: (empty(metadata) ? json('null') : metadata)
+    parameters: (empty(parameters) ? json('null') : parameters)
+    policyRule: policyRule
+  }
 }
 
 output policyDefinitionId string = subscriptionResourceId(subscriptionId,'Microsoft.Authorization/policyDefinitions',policyDefinition.name)
-output roleDefinitionIds array = (contains(policyDefinitionProperties.policyRule.then, 'details') ? ((contains(policyDefinitionProperties.policyRule.then.details, 'roleDefinitionIds') ? policyDefinitionProperties.policyRule.then.details.roleDefinitionIds : [])) : [])
+output roleDefinitionIds array = (contains(policyDefinition.properties.policyRule.then, 'details') ? ((contains(policyDefinition.properties.policyRule.then.details, 'roleDefinitionIds') ? policyDefinition.properties.policyRule.then.details.roleDefinitionIds : [])) : [])
