@@ -69,6 +69,8 @@ To deploy resource to a Resource Group, provide the `subscriptionId` and `resour
 
 ## Considerations
 
+- Policy Exemptions have a dependency on Policy Assignments being applied before creating an exemption. You can use the Policy Assignment [Module](../policyAssignments/deploy.bicep) to deploy a Policy Assignment and then create the exemption for it on the required scope.
+
 ## Additional resources
 
 - [Deployments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2018-02-01/deployments)
