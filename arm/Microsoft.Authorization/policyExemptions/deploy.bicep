@@ -4,10 +4,10 @@ targetScope = 'managementGroup'
 @maxLength(64)
 param policyExemptionName string
 
-@description('Optional. The display name of the policy exemption. If not provided, will be replaced with the Policy exemption Name')
+@description('Optional. The display name of the policy exemption.')
 param displayName string = ''
 
-@description('Optional. The display name of the policy exemption. If not provided, will be replaced with the Policy exemption Name')
+@description('Optional. The description of the policy exemption.')
 param policyExemptionDescription string = ''
 
 @description('Optional. The policy exemption metadata. Metadata is an open ended object and is typically a collection of key value pairs.')
@@ -29,13 +29,13 @@ param policyDefinitionReferenceIds array = []
 @description('Optional. The expiration date and time (in UTC ISO 8601 format yyyy-MM-ddTHH:mm:ssZ) of the policy exemption. e.g. 2021-10-02T03:57:00.000Z ')
 param expiresOn string = ''
 
-@description('Optional. The ID of the Management Group (Scope). Cannot be used with subscriptionId and does not support tenant level deployment (i.e. \'/\')')
+@description('Optional. The ID of the management group to be exempted from the policy assignment. Cannot use with subscription id parameter.')
 param managementGroupId string = ''
 
-@description('Optional. The ID of the Azure Subscription (Scope). Cannot be used with managementGroupId')
+@description('Optional. The ID of the azure subscription to be exempted from the policy assignment. Cannot use with management group id parameter.')
 param subscriptionId string = ''
 
-@description('Optional. The Target Scope for the Policy. The name of the resource group for the policy assignment')
+@description('Optional. The name of the resource group to be exempted from the policy assignment. Must also use the subscription ID parameter.')
 param resourceGroupName string = ''
 
 var policyExemptionName_var = toLower(replace(policyExemptionName, ' ', '-'))
