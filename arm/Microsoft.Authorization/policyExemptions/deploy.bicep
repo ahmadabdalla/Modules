@@ -38,6 +38,9 @@ param subscriptionId string = ''
 @description('Optional. The name of the resource group to be exempted from the policy assignment. Must also use the subscription ID parameter.')
 param resourceGroupName string = ''
 
+@description('Optional. Location for all resources.')
+param location string = deployment().location
+
 var policyExemptionName_var = toLower(replace(policyExemptionName, ' ', '-'))
 var policyExemptionProperties_var = {
   displayName: (empty(displayName) ? json('null') : displayName)
@@ -56,6 +59,7 @@ module policyExemption_mg './.bicep/nested_policyexemptions_mg.bicep' = if (!emp
     policyExemptionName: policyExemptionName_var
     policyExemptionProperties: policyExemptionProperties_var
     managementGroupId: managementGroupId
+    location: location
   }
 }
 
@@ -66,6 +70,7 @@ module policyExemption_sub './.bicep/nested_policyexemptions_sub.bicep' = if (em
     policyExemptionName: policyExemptionName_var
     policyExemptionProperties: policyExemptionProperties_var
     subscriptionId: subscriptionId
+    location: location
   }
 }
 
@@ -76,6 +81,7 @@ module policyExemption_rg './.bicep/nested_policyexemptions_rg.bicep' = if (empt
     policyExemptionName: policyExemptionName_var
     policyExemptionProperties: policyExemptionProperties_var
     subscriptionId: subscriptionId
+    location: location
   }
 }
 
