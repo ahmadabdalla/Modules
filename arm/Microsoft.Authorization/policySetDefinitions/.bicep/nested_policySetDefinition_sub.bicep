@@ -7,7 +7,7 @@ param policyDefinitions array
 param policyDefinitionGroups array = []
 param parameters object = {}
 param location string = deployment().location
-param subscriptionId string = subscription().id
+param subscriptionId string = subscription().subscriptionId
 
 resource policySetDefinition 'Microsoft.Authorization/policySetDefinitions@2020-09-01' = {
   name: policySetDefinitionName
