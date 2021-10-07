@@ -116,7 +116,7 @@ jobs:
         uses: ./.github/actions/templates/deployModule
         with:
           moduleName: '${{ env.moduleName }}'
-          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
+          templateFilePath: '${{ env.modulePath }}/nested_policySetDefinition_sub.bicep'
           parameterFilePath: '${{ env.modulePath }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
@@ -178,5 +178,5 @@ jobs:
         uses: ./.github/actions/templates/removeModule
         with:
           moduleName: '${{ env.moduleName }}'
-          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
+          templateFilePath: '${{ env.modulePath }}/nested_policySetDefinition_sub.bicep'
           resourceGroupName: '${{ env.resourceGroupName }}'

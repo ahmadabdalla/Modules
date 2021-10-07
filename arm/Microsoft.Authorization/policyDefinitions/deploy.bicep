@@ -49,7 +49,7 @@ module policyDefinition_mg './.bicep/nested_policyDefinitions_mg.bicep' = if (em
     managementGroupId: managementGroupId
     mode: mode
     displayName: (empty(displayName) ? '' : displayName)
-    policyDescription: (empty(policyDescription) ? '': policyDescription)
+    policyDescription: (empty(policyDescription) ? '' : policyDescription)
     metadata: (empty(metadata) ? {} : metadata)
     parameters: (empty(parameters) ? {} : parameters)
     policyRule: policyRule
@@ -65,7 +65,7 @@ module policyDefinition_sub './.bicep/nested_policyDefinitions_sub.bicep' = if (
     subscriptionId: subscriptionId
     mode: mode
     displayName: (empty(displayName) ? '' : displayName)
-    policyDescription: (empty(policyDescription) ? '': policyDescription)
+    policyDescription: (empty(policyDescription) ? '' : policyDescription)
     metadata: (empty(metadata) ? {} : metadata)
     parameters: (empty(parameters) ? {} : parameters)
     policyRule: policyRule

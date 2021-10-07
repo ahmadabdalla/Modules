@@ -23,5 +23,5 @@ resource policyDefinition 'Microsoft.Authorization/policyDefinitions@2020-09-01'
   }
 }
 
-output policyDefinitionId string = subscriptionResourceId(subscriptionId,'Microsoft.Authorization/policyDefinitions',policyDefinition.name)
+output policyDefinitionId string = subscriptionResourceId(subscriptionId, 'Microsoft.Authorization/policyDefinitions', policyDefinition.name)
 output roleDefinitionIds array = (contains(policyDefinition.properties.policyRule.then, 'details') ? ((contains(policyDefinition.properties.policyRule.then.details, 'roleDefinitionIds') ? policyDefinition.properties.policyRule.then.details.roleDefinitionIds : [])) : [])
