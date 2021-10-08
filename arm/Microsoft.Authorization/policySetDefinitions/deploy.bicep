@@ -65,5 +65,5 @@ module policySetDefinition_sub './.bicep/nested_policySetDefinition_sub.bicep' =
   }
 }
 
-output policySetDefinitionName string = policySetDefinitionName_var
+output policySetDefinitionName string = !empty(managementGroupId) ? policySetDefinition_mg.outputs.policySetDefinitionName : policySetDefinition_sub.outputs.policySetDefinitionName
 output policySetDefinitionId string = !empty(managementGroupId) ? policySetDefinition_mg.outputs.policySetDefinitionId : policySetDefinition_sub.outputs.policySetDefinitionId

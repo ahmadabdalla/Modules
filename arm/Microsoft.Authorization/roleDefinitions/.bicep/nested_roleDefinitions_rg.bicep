@@ -6,7 +6,7 @@ param actions array = []
 param notActions array = []
 param dataActions array = []
 param notDataActions array = []
-param subscriptionId string = subscription().id
+param subscriptionId string = subscription().subscriptionId
 param resourceGroupName string = resourceGroup().name
 param location string = resourceGroup().location
 

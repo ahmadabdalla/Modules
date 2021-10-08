@@ -6,7 +6,7 @@ param actions array = []
 param notActions array = []
 param dataActions array = []
 param notDataActions array = []
-param subscriptionId string
+param subscriptionId string = subscription().subscriptionId
 param location string = deployment().location
 
 resource roleDefinition 'Microsoft.Authorization/roleDefinitions@2018-01-01-preview' = {

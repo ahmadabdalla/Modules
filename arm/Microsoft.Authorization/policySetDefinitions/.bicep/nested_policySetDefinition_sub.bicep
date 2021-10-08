@@ -9,8 +9,10 @@ param parameters object = {}
 param location string = deployment().location
 param subscriptionId string = subscription().subscriptionId
 
+var policySetDefinitionName_var = replace(policySetDefinitionName, ' ', '-')
+
 resource policySetDefinition 'Microsoft.Authorization/policySetDefinitions@2020-09-01' = {
-  name: policySetDefinitionName
+  name: policySetDefinitionName_var
   location: location
   properties: {
     policyType: 'Custom'
@@ -23,4 +25,5 @@ resource policySetDefinition 'Microsoft.Authorization/policySetDefinitions@2020-
   }
 }
 
+output policySetDefinitionName string = policySetDefinition.name
 output policySetDefinitionId string = subscriptionResourceId(subscriptionId, 'Microsoft.Authorization/policySetDefinitions', policySetDefinition.name)

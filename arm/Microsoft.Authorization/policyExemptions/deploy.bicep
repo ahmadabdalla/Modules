@@ -95,6 +95,6 @@ module policyExemption_rg './.bicep/nested_policyExemptions_rg.bicep' = if (empt
   }
 }
 
-output policyExemptionName string = policyExemptionName_var
+output policyExemptionName string = !empty(managementGroupId) ? policyExemption_mg.outputs.policyExemptionName : (!empty(resourceGroupName) ? policyExemption_rg.outputs.policyExemptionName : policyExemption_sub.outputs.policyExemptionName)
 output policyExemptionId string = !empty(managementGroupId) ? policyExemption_mg.outputs.policyExemptionId : (!empty(resourceGroupName) ? policyExemption_rg.outputs.policyExemptionId : policyExemption_sub.outputs.policyExemptionId)
 output policyExemptionScope string = !empty(managementGroupId) ? policyExemption_mg.outputs.policyExemptionScope : (!empty(resourceGroupName) ? policyExemption_rg.outputs.policyExemptionScope : policyExemption_sub.outputs.policyExemptionScope)

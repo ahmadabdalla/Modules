@@ -72,6 +72,6 @@ module policyDefinition_sub './.bicep/nested_policyDefinitions_sub.bicep' = if (
   }
 }
 
-output policyDefinitionName string = policyDefinitionName_var
+output policyDefinitionName string = !empty(managementGroupId) ? policyDefinition_mg.outputs.policyDefinitionName : policyDefinition_sub.outputs.policyDefinitionName
 output policyDefinitionId string = !empty(managementGroupId) ? policyDefinition_mg.outputs.policyDefinitionId : policyDefinition_sub.outputs.policyDefinitionId
 output roleDefinitionIds array = !empty(managementGroupId) ? policyDefinition_mg.outputs.roleDefinitionIds : policyDefinition_sub.outputs.roleDefinitionIds

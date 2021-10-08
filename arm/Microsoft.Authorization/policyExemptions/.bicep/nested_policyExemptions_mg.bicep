@@ -11,8 +11,10 @@ param expiresOn string = ''
 param managementGroupId string
 param location string = deployment().location
 
+var policyExemptionName_var = toLower(replace(policyExemptionName, ' ', '-'))
+
 resource policyExemption 'Microsoft.Authorization/policyExemptions@2020-07-01-preview' = {
-  name: policyExemptionName
+  name: policyExemptionName_var
   location: location
   properties: {
     displayName: (empty(displayName) ? json('null') : displayName)
@@ -25,5 +27,6 @@ resource policyExemption 'Microsoft.Authorization/policyExemptions@2020-07-01-pr
   }
 }
 
+output policyExemptionName string = policyExemption.name
 output policyExemptionId string =   extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups',managementGroupId),'Microsoft.Authorization/policyExemptions',policyExemption.name)
 output policyExemptionScope string = tenantResourceId('Microsoft.Management/managementGroups',managementGroupId)

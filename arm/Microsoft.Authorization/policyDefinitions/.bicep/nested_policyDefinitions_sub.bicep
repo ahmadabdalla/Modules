@@ -9,8 +9,10 @@ param policyRule object
 param subscriptionId string = ''
 param location string = deployment().location
 
+var policyDefinitionName_var = toLower(replace(policyDefinitionName, ' ', '-'))
+
 resource policyDefinition 'Microsoft.Authorization/policyDefinitions@2020-09-01' = {
-  name: policyDefinitionName
+  name: policyDefinitionName_var
   location: location
   properties: {
     policyType: 'Custom'
@@ -23,5 +25,6 @@ resource policyDefinition 'Microsoft.Authorization/policyDefinitions@2020-09-01'
   }
 }
 
+output policyDefinitionName string = policyDefinition.name
 output policyDefinitionId string = subscriptionResourceId(subscriptionId, 'Microsoft.Authorization/policyDefinitions', policyDefinition.name)
 output roleDefinitionIds array = (contains(policyDefinition.properties.policyRule.then, 'details') ? ((contains(policyDefinition.properties.policyRule.then.details, 'roleDefinitionIds') ? policyDefinition.properties.policyRule.then.details.roleDefinitionIds : [])) : [])
