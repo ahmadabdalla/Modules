@@ -21,7 +21,7 @@
                             {
                                 "roleDefinitionIdOrName": "Reader",
                                 "principalIds": [
-                                    "640ccf66-4edd-47e6-9a06-a15de35d42ad"
+                                    "<<principalId>>"
                                 ]
                             }
                         ]
@@ -46,7 +46,7 @@
                             {
                                 "roleDefinitionIdOrName": "Reader",
                                 "principalIds": [
-                                    "640ccf66-4edd-47e6-9a06-a15de35d42ad"
+                                    "<<principalId>>"
                                 ]
                             }
                         ]
@@ -76,7 +76,7 @@
                             {
                                 "roleDefinitionIdOrName": "Reader",
                                 "principalIds": [
-                                    "640ccf66-4edd-47e6-9a06-a15de35d42ad"
+                                    "<<principalId>>"
                                 ]
                             }
                         ]
@@ -93,7 +93,7 @@
                 {
                     "roleDefinitionIdOrName": "Reader",
                     "principalIds": [
-                        "640ccf66-4edd-47e6-9a06-a15de35d42ad"
+                        "<<principalId>>"
                     ]
                 }
             ]

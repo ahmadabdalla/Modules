@@ -731,6 +731,19 @@ Describe 'Deployment template tests' -Tag Template {
             }
         }
 
+        It '[<moduleFolderName>] Parameter files should not contain the subscriptionId guid' -TestCases $deploymentFolderTestCases {
+            param (
+                [hashtable[]] $parameterFileTestCases
+            )
+
+            foreach ($parameterFileTestCase in $parameterFileTestCases) {
+                $ParameterFileContent = Get-Content -Path $parameterFileTestCase.parameterFile_Path
+                $SubscriptionIdKeyCount = ($ParameterFileContent | Select-String -Pattern '"subscriptionId"', "'subscriptionId'", '/subscriptions/' -AllMatches).Matches.Count
+                $SubscriptionIdValueCount = ($ParameterFileContent | Select-String -Pattern '<<subscriptionId>>' -AllMatches).Matches.Count
+                $SubscriptionIdKeyCount | Should -Be $SubscriptionIdValueCount -Because ('Parameter file should not contain the subscription Id guid, instead should reference a token value "<<subscriptionId>>"')
+            }
+        }
+
         It '[<moduleFolderName>] Parameter files should not contain the Principal ID guid' -TestCases $deploymentFolderTestCases {
             param (
                 [hashtable[]] $parameterFileTestCases
@@ -740,9 +753,24 @@ Describe 'Deployment template tests' -Tag Template {
                 $ParameterFileContent = Get-Content -Path $parameterFileTestCase.parameterFile_Path
                 $PrincipalIdKeyCount = ($ParameterFileContent | Select-String -Pattern '"principalId"', "'principalId'", 'principalId' -AllMatches).Matches.Count
                 $PrincipalIdValueCount = ($ParameterFileContent | Select-String -Pattern '<<principalId>>' -AllMatches).Matches.Count
-                $PrincipalIdKeyCount - $PrincipalIdValueCount | Should -Be $PrincipalIdValueCount -Because ('Parameter file should not contain the Principal Id guid, instead should reference a token value "<<principalId>>"')
+                $PrincipalIdValueCount | Should -BeGreaterOrEqual ($PrincipalIdKeyCount - $PrincipalIdValueCount) -Because ('Parameter file should not contain the Principal Id guid, instead should reference a token value "<<principalId>>"')
             }
         }
+
+        It '[<moduleFolderName>] Parameter files should not contain Tenant ID guid' -TestCases $deploymentFolderTestCases {
+            param (
+                [hashtable[]] $parameterFileTestCases
+            )
+
+            foreach ($parameterFileTestCase in $parameterFileTestCases) {
+                $ParameterFileContent = Get-Content -Path $parameterFileTestCase.parameterFile_Path
+                $TenantIdKeyCount = ($ParameterFileContent | Select-String -Pattern '"tenantId"', 'tenantId' -AllMatches).Matches.Count
+                $TenantIdValueCount = ($ParameterFileContent | Select-String -Pattern '<<tenantId>>' -AllMatches).Matches.Count
+                $TenantIdKeyCount - $TenantIdValueCount | Should -Be $TenantIdValueCount -Because ('Parameter file should not contain the Tenant Id guid, instead should reference a token value "<<tenantId>>"')
+            }
+
+        }
+
 
         It '[<moduleFolderName>] Parameter files should not contain Tenant ID guid' -TestCases $deploymentFolderTestCases {
             param (
