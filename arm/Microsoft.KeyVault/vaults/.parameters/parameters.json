@@ -19,7 +19,7 @@
                 {
                     "roleDefinitionIdOrName": "Reader",
                     "principalIds": [
-                        "<<principalId>>"
+                        "aae2fc3c-805f-4b65-9cbb-a053881cf033"
                     ]
                 }
             ]
