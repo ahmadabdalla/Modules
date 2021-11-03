@@ -48,6 +48,9 @@ runs:
     - name: 'Replace Tokens [${{ inputs.parameterFilePath }}] '
       shell: pwsh
       run: |
+        # Load used funtions
+        . ".github/actions/sharedScripts/Convert-TokensInFiles.ps1"
+
         $DefaultParameterFileTokens = @(
             @{ Replace = '<<subscriptionId>>'; With = '${{ inputs.subscriptionId }}' }
             @{ Replace = '<<managementGroupId>>'; With = '${{ inputs.managementGroupId }}' }
@@ -59,6 +62,7 @@ runs:
         $CustomParameterFileTokens = Get-AzKeyVaultSecret -VaultName $KeyVault.VaultName -Name CustomParameterFileTokens -AsPlainText -ErrorAction SilentlyContinue |
             ConvertFrom-Json -ErrorAction SilentlyContinue
         $AllParameterFileTokens = $DefaultParameterFileTokens + $CustomParameterFileTokens
+
         Write-Verbose 'Invoking Convert-TokensInFileList'
         Convert-TokensInFileList -Paths '${{ inputs.parameterFilePath }}' -TokensReplaceWith $AllParameterFileTokens
 
