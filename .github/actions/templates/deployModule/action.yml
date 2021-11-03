@@ -48,17 +48,19 @@ runs:
     - name: 'Replace Tokens [${{ inputs.parameterFilePath }}] '
       shell: pwsh
       run: |
-        # Load used funtions
-        . ".github/actions/sharedScripts/Convert-TokensInFileList.ps1"
-        $TokensReplaceWithObject = @(
-            @{ Replace = "<<tenantId>>"; With = '${{ env.ARM_TENANT_ID }}' }
-            @{ Replace = "<<tenantId2>>"; With = '${{ env.ARM_TENANT_ID_2 }}' }
-            @{ Replace = "<<subscriptionId>>"; With = '${{ env.ARM_SUBSCRIPTION_ID }}' }
-            @{ Replace = "<<managementGroupId>>"; With = '${{ env.ARM_MGMTGROUP_ID }}' }
-            @{ Replace = "<<principalId1>>"; With = '${{ env.ARM_PRINCIPAL_ID1 }}' }
-        )
-        write-verbose "Invoking Convert-TokensInFileList"
-        Convert-TokensInFileList -Paths '${{ inputs.parameterFilePath }}' -TokensReplaceWith $TokensReplaceWithObject
+        $DefaultParameterFileTokens = @(
+            @{ Replace = '<<subscriptionId>>'; With = '${{ inputs.subscriptionId }}' }
+            @{ Replace = '<<managementGroupId>>'; With = '${{ inputs.managementGroupId }}' }
+            @{ Replace = '<<resourceGroupName>>'; With = '${{ inputs.resourceGroupName }}' }
+            @{ Replace = '<<location>>'; With = '${{ inputs.location }}' }
+        ) | ForEach-Object { [PSCustomObject]$PSItem }
+
+        $KeyVault = Get-AzKeyVault -Name 'ahmad-az-kv-x-002'
+        $CustomParameterFileTokens = Get-AzKeyVaultSecret -VaultName $KeyVault.VaultName -Name CustomParameterFileTokens -AsPlainText -ErrorAction SilentlyContinue |
+            ConvertFrom-Json -ErrorAction SilentlyContinue
+        $AllParameterFileTokens = $DefaultParameterFileTokens + $CustomParameterFileTokens
+        Write-Verbose 'Invoking Convert-TokensInFileList'
+        Convert-TokensInFileList -Paths '${{ inputs.parameterFilePath }}' -TokensReplaceWith $AllParameterFileTokens
 
     - name: 'Validate [${{ inputs.templateFilePath }}]'
       shell: pwsh

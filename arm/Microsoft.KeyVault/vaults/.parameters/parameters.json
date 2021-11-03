@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-kv-x-001"
+            "value": "ahmad-az-kv-x-001"
         },
         "softDeleteRetentionInDays": {
             "value": 7
@@ -16,7 +16,7 @@
                 {
                     "roleDefinitionIdOrName": "Reader",
                     "principalIds": [
-                        "<<principalId1>>"
+                        "aae2fc3c-805f-4b65-9cbb-a053881cf033"
                     ]
                 }
             ]
