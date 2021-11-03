@@ -42,7 +42,7 @@ runs:
       shell: pwsh
       run: |
         # Load used funtions
-        . ".github/actions/sharedScripts/Convert-TokensInFiles.ps1"
+        . ".github/actions/sharedScripts/Convert-TokensInFileList.ps1"
 
         $DefaultParameterFileTokens = @(
             @{ Replace = '<<subscriptionId>>'; With = '${{ inputs.subscriptionId }}' }
