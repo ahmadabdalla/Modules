@@ -54,16 +54,16 @@ runs:
             @{ Replace = '<<location>>'; With = '${{ inputs.location }}' }
         ) | ForEach-Object { [PSCustomObject]$PSItem }
 
-        $KeyVaultInput = '${{ inputs.keyVault }}'
+        $KeyVaultInput = `
+            @'
+        ${{ inputs.keyVault }}
+        '@
         if ($KeyVaultInput) {
-            $KeyVaultObj = $KeyVaultInput | ConvertFrom-Json
+            $KeyVaultObj = $KeyVaultInput | ConvertFrom-Json -ErrorAction SilentlyContinue
             $CustomParameterFileTokens = Get-AzKeyVaultSecret -Name $KeyVaultObj.CustomParameterFileTokensSecretName -VaultName $KeyVaultObj.keyVaultName -AsPlainText -ErrorAction SilentlyContinue |
                 ConvertFrom-Json -ErrorAction SilentlyContinue
         }
         $AllParameterFileTokens = $DefaultParameterFileTokens + $CustomParameterFileTokens
-
-        Write-Verbose 'Invoking Convert-TokensInFileList'
-        Convert-TokensInFileList -Paths '${{ inputs.parameterFilePath }}' -TokensReplaceWith $AllParameterFileTokens
 
       # [Test Deployment] task(s)
       #--------------------------
