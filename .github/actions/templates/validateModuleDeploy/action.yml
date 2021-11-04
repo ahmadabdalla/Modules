@@ -59,9 +59,9 @@ runs:
         ${{ inputs.keyVault }}
         '@
         if ($KeyVaultInput) {
-            $KeyVaultObj = $KeyVaultInput | ConvertFrom-Json -ErrorAction SilentlyContinue
-            $CustomParameterFileTokens = Get-AzKeyVaultSecret -Name $KeyVaultObj.CustomParameterFileTokensSecretName -VaultName $KeyVaultObj.keyVaultName -AsPlainText -ErrorAction SilentlyContinue |
-                ConvertFrom-Json -ErrorAction SilentlyContinue
+            $KeyVaultObj = $KeyVaultInput | ConvertFrom-Json
+            $CustomParameterFileTokens = Get-AzKeyVaultSecret -Name $KeyVaultObj.CustomParameterFileTokensSecretName -VaultName $KeyVaultObj.keyVaultName -AsPlainText |
+                ConvertFrom-Json
         }
         $AllParameterFileTokens = $DefaultParameterFileTokens + $CustomParameterFileTokens
 
