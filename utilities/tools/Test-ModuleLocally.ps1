@@ -28,22 +28,24 @@ A Hashtable Paramaeter that contains custom tokens to be replaced in the paramte
 .EXAMPLE
 
 $TestModuleLocallyInput = @{
-    ModuleName       = 'Microsoft.Authorization\roleAssignments'
-    PesterTest       = $true
-    DeploymentTest       = $true
-    ValidationTest        = $false
+    ModuleName                 = 'Microsoft.Network\applicationSecurityGroups'
+    PesterTest                 = $true
+    DeploymentTest             = $true
+    ValidationTest             = $true
     ValidateOrDeployParameters = @{
-        Location          = 'azureRegionName'
-        ResourceGroupName = 'resourceGroupName'
-        SubscriptionId    = '12345678-1234-1234-abcd-1369d14d0d45'
+        Location          = 'australiaeast'
+        ResourceGroupName = 'validation-rg'
+        SubscriptionId    = 'abcdefg8-1234-1234-1234567890'
         ManagementGroupId = 'mg-contoso'
-        PrincipalId       = '12345678-1234-1234-abcd-1369d14d0d45'
-        TenantId          = '12345678-1234-1234-abcd-1369d14d0d45'
         RemoveDeployment  = $false
     }
+    CustomParameterFileTokens  = @(
+        @{ Replace = '<<principalId1>>'; With = 'abcdefg8-1234-1234-1234567890' }
+        @{ Replace = '<<tenantId1>>'; With = 'abcdefg8-1234-1234-1234567890' }
+    )
 }
 
-Test-ModuleLocally @TestModuleLocallyInput
+Test-ModuleLocally @TestModuleLocallyInput -Verbose
 
 .NOTES
 Make sure you provide the right information in the 'ValidateOrDeployParameters' parameter for this function abd Ensure you have the ability to perform the deployment operations locally.
@@ -118,7 +120,7 @@ function Test-ModuleLocally {
                 @{ Replace = '<<location>>'; With = "$($ValidateOrDeployParameters.location)" }
             ) | ForEach-Object { [PSCustomObject]$PSItem }
 
-            ($DefaultParameterFileTokens + $CustomParameterFileTokens) | ForEach-Object { Convert-TokensInFileList -Paths $PSitem.FullName -TokensReplaceWith $TokensReplaceWithObject }
+            $ModuleParameterFiles | ForEach-Object { Convert-TokensInFileList -Paths $PSitem.FullName -TokensReplaceWith ($DefaultParameterFileTokens + $CustomParameterFileTokens) }
 
             # Build Modules Validation and Deployment Inputs
             $functionInput = @{
@@ -161,15 +163,12 @@ function Test-ModuleLocally {
             } catch {
                 Write-Error $PSItem.Exception
                 # Replace Values with Tokens For Repo Updates
-                $RestoreTokensObject = @(
-                    @{ Replace = "$($ValidateOrDeployParameters.TenantId)" ; With = '<<tenantId>>' }
-                    @{ Replace = "$($ValidateOrDeployParameters.SubscriptionId)" ; With = '<<subscriptionId>>' }
-                    @{ Replace = "$($ValidateOrDeployParameters.ManagementGroupId)"; With = '<<managementGroupId>>' }
-                    @{ Replace = "$($ValidateOrDeployParameters.PrincipalId)" ; With = '<<principalId1>>' }
-                )
-                $ModuleParameterFiles | ForEach-Object { Convert-TokensInFileList -Paths $PSitem.FullName -TokensReplaceWith $RestoreTokensObject }
+                ($DefaultParameterFileTokens + $CustomParameterFileTokens) | ForEach-Object {
+                    $Replace = $PSitem.With; $With = $PSItem.Replace
+                    $PSitem.Replace = $Replace; $PSitem.With = $With
+                }
+                $ModuleParameterFiles | ForEach-Object { Convert-TokensInFileList -Paths $PSitem.FullName -TokensReplaceWith ($DefaultParameterFileTokens + $CustomParameterFileTokens) }
             }
-
         }
     }
 
@@ -177,13 +176,11 @@ function Test-ModuleLocally {
         # Restore Parameter Files
         if (($ValidateTest -or $DeploymentTest) -and $ValidateOrDeployParameters) {
             # Replace Values with Tokens For Repo Updates
-            $RestoreTokensObject = @(
-                @{ Replace = "$($ValidateOrDeployParameters.TenantId)" ; With = '<<tenantId>>' }
-                @{ Replace = "$($ValidateOrDeployParameters.SubscriptionId)" ; With = '<<subscriptionId>>' }
-                @{ Replace = "$($ValidateOrDeployParameters.ManagementGroupId)"; With = '<<managementGroupId>>' }
-                @{ Replace = "$($ValidateOrDeployParameters.PrincipalId)" ; With = '<<principalId1>>' }
-            )
-            $ModuleParameterFiles | ForEach-Object { Convert-TokensInFileList -Paths $PSitem.FullName -TokensReplaceWith $RestoreTokensObject }
+            ($DefaultParameterFileTokens + $CustomParameterFileTokens) | ForEach-Object {
+                $Replace = $PSitem.With; $With = $PSItem.Replace
+                $PSitem.Replace = $Replace; $PSitem.With = $With
+            }
+            $ModuleParameterFiles | ForEach-Object { Convert-TokensInFileList -Paths $PSitem.FullName -TokensReplaceWith ($DefaultParameterFileTokens + $CustomParameterFileTokens) }
         }
     }
 }
