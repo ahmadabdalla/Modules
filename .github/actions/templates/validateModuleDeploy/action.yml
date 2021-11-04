@@ -56,8 +56,8 @@ runs:
         # Get Key Vault Information (If Provided) To Initialize Default Parameter File Tokens
         if ("${{ inputs.keyVault }}") {
             $KeyVaultObj = "${{ inputs.keyVault }}" | ConvertFrom-Json
-            $CustomParameterFileTokens = Get-AzKeyVaultSecret -Name $KeyVaultObj.CustomParameterFileTokensSecretName -VaultName $KeyVaultObj.keyVaultName -AsPlainText -ErrorAction SilentlyContinue |
-                ConvertFrom-Json -ErrorAction SilentlyContinue
+            $CustomParameterFileTokens = Get-AzKeyVaultSecret -Name $KeyVaultObj.CustomParameterFileTokensSecretName -VaultName $KeyVaultObj.keyVaultName -AsPlainText |
+                ConvertFrom-Json
         }
         # Convert Tokens in Parameter Files
         Write-Verbose 'Invoking Convert-TokensInFileList'
