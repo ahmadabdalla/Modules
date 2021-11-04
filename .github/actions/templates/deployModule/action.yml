@@ -58,12 +58,8 @@ runs:
             @{ Replace = '<<location>>'; With = '${{ inputs.location }}' }
         ) | ForEach-Object { [PSCustomObject]$PSItem }
         # Get Key Vault Information (If Provided) To Initialize Default Parameter File Tokens
-        $KeyVaultInput = `
-            @'
-        ${{ inputs.keyVault }}
-        '@
-        if (${{ inputs.keyVault }}) {
-            $KeyVaultObj = $KeyVaultInput | ConvertFrom-Json -ErrorAction SilentlyContinue
+        if ("${{ inputs.keyVault }}") {
+            $KeyVaultObj = "${{ inputs.keyVault }}" | ConvertFrom-Json
             $CustomParameterFileTokens = Get-AzKeyVaultSecret -Name $KeyVaultObj.CustomParameterFileTokensSecretName -VaultName $KeyVaultObj.keyVaultName -AsPlainText -ErrorAction SilentlyContinue |
                 ConvertFrom-Json -ErrorAction SilentlyContinue
         }
