@@ -22,6 +22,9 @@ A Switch Paramaeter that triggers the Deployment of the Module
 .PARAMETER ValidationTest
 A Switch Paramaeter that triggers the Validation of the Module Only without Deployment
 
+.PARAMETER CustomParameterFileTokens
+A Hashtable Paramaeter that contains custom tokens to be replaced in the paramter files for deployment
+
 .EXAMPLE
 
 $TestModuleLocallyInput = @{
@@ -68,8 +71,11 @@ function Test-ModuleLocally {
 
         [Parameter(ParameterSetName = 'Deploy')]
         [parameter(Mandatory = $false)]
-        [switch]$DeployAllParameterFiles
+        [switch]$DeployAllParameterFiles,
 
+        [Parameter(ParameterSetName = 'Deploy')]
+        [parameter(Mandatory = $false)]
+        [psobject]$CustomParameterFileTokens
     )
 
     begin {
@@ -105,13 +111,14 @@ function Test-ModuleLocally {
             # Load Tokens Converter Script
             . (Join-Path $PSScriptRoot '..\..' '.github\actions\sharedScripts\Convert-TokensInFileList.ps1')
             # Replace Tokens with Values For Local Testing
-            $TokensReplaceWithObject = @(
-                @{ Replace = '<<tenantId>>'; With = "$($ValidateOrDeployParameters.TenantId)" }
+            $DefaultParameterFileTokens = @(
                 @{ Replace = '<<subscriptionId>>'; With = "$($ValidateOrDeployParameters.SubscriptionId)" }
                 @{ Replace = '<<managementGroupId>>'; With = "$($ValidateOrDeployParameters.ManagementGroupId)" }
-                @{ Replace = '<<principalId1>>'; With = "$($ValidateOrDeployParameters.PrincipalId)" }
-            )
-            $ModuleParameterFiles | ForEach-Object { Convert-TokensInFileList -Paths $PSitem.FullName -TokensReplaceWith $TokensReplaceWithObject }
+                @{ Replace = '<<resourceGroupName>>'; With = "$($ValidateOrDeployParameters.resourceGroupName)" }
+                @{ Replace = '<<location>>'; With = "$($ValidateOrDeployParameters.location)" }
+            ) | ForEach-Object { [PSCustomObject]$PSItem }
+
+            ($DefaultParameterFileTokens + $CustomParameterFileTokens) | ForEach-Object { Convert-TokensInFileList -Paths $PSitem.FullName -TokensReplaceWith $TokensReplaceWithObject }
 
             # Build Modules Validation and Deployment Inputs
             $functionInput = @{

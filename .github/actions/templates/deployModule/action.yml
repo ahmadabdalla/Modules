@@ -70,9 +70,8 @@ runs:
         }
 
         # Convert Tokens in Parameter Files
-        $AllParameterFileTokens = $DefaultParameterFileTokens + $CustomParameterFileTokens
         Write-Verbose 'Invoking Convert-TokensInFileList'
-        Convert-TokensInFileList -Paths '${{ inputs.parameterFilePath }}' -TokensReplaceWith $AllParameterFileTokens
+        Convert-TokensInFileList -Paths '${{ inputs.parameterFilePath }}' -TokensReplaceWith ($DefaultParameterFileTokens + $CustomParameterFileTokens)
 
     - name: 'Validate [${{ inputs.templateFilePath }}]'
       shell: pwsh
