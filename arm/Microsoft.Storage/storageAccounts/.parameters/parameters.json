@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>sxxazsaweux001"
+            "value": "ahmsxxazsaweux001"
         },
         "managedServiceIdentity": {
             "value": "SystemAssigned"
