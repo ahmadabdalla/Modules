@@ -58,6 +58,7 @@ runs:
             @{ Replace = '<<location>>'; With = '${{ inputs.location }}' }
         ) | ForEach-Object { [PSCustomObject]$PSItem }
 
+        # Get Key Vault Information (If Provided)
         $KeyVaultInput = `
             @'
         ${{ inputs.keyVault }}
@@ -67,7 +68,11 @@ runs:
             $CustomParameterFileTokens = Get-AzKeyVaultSecret -Name $KeyVaultObj.CustomParameterFileTokensSecretName -VaultName $KeyVaultObj.keyVaultName -AsPlainText -ErrorAction SilentlyContinue |
                 ConvertFrom-Json -ErrorAction SilentlyContinue
         }
+
+        # Convert Tokens in Parameter Files
         $AllParameterFileTokens = $DefaultParameterFileTokens + $CustomParameterFileTokens
+        Write-Verbose 'Invoking Convert-TokensInFileList'
+        Convert-TokensInFileList -Paths '${{ inputs.parameterFilePath }}' -TokensReplaceWith $AllParameterFileTokens
 
     - name: 'Validate [${{ inputs.templateFilePath }}]'
       shell: pwsh
