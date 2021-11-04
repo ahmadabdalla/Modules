@@ -20,6 +20,9 @@ inputs:
   managementGroupId:
     description: 'The managementGroupId to deploy to'
     required: false
+  keyVault:
+    description: 'The Azure Key Vault used to fetch additional secrets.'
+    required: false
 
 runs:
   using: 'composite'
@@ -51,8 +54,12 @@ runs:
             @{ Replace = '<<location>>'; With = '${{ inputs.location }}' }
         ) | ForEach-Object { [PSCustomObject]$PSItem }
 
-        $KeyVault = Get-AzKeyVault -Name 'ahmad-az-kv-x-002'
-        $CustomParameterFileTokens = Get-AzKeyVaultSecret -VaultName $KeyVault.VaultName -Name CustomParameterFileTokens -AsPlainText | ConvertFrom-Json
+        $KeyVaultInput = '${{ inputs.keyVault }}'
+        if ($KeyVaultInput) {
+            $KeyVaultObj = $KeyVaultInput | ConvertFrom-Json
+            $CustomParameterFileTokens = Get-AzKeyVaultSecret -Name $KeyVaultObj.CustomParameterFileTokensSecretName -VaultName $KeyVaultObj.keyVaultName -AsPlainText -ErrorAction SilentlyContinue |
+                ConvertFrom-Json -ErrorAction SilentlyContinue
+        }
         $AllParameterFileTokens = $DefaultParameterFileTokens + $CustomParameterFileTokens
 
         Write-Verbose 'Invoking Convert-TokensInFileList'
