@@ -11,8 +11,6 @@ This section provides details on the Tokens Replacement Functionality that enabl
   - [Token Types](#token-types)
     - [1. Default Tokens (Environment Variables) [Default]](#1-default-tokens-environment-variables-default)
     - [2. Local Custom Tokens (Source Control) [Optional]](#2-local-custom-tokens-source-control-optional)
-    - [3. Remote Custom Tokens (Key Vault) [Optional]](#3-remote-custom-tokens-key-vault-optional)
-  - [How the Token Key Vault is created](#how-the-token-key-vault-is-created)
   - [How Tokens are replaced in a Parameter File](#how-tokens-are-replaced-in-a-parameter-file)
 
 ---
@@ -28,11 +26,11 @@ The Resource Modules Library Pipelines contains a Token replacement function tha
 
 ### Token Types
 
-There are (3) Token types that can be applied on a Parameter File:
+There are (2) Token types that can be applied on a Parameter File:
 
 #### 1. Default Tokens (Environment Variables) [Default]
 
-These are tokens constructed from Environment Variables, which are defined in the Workflow (Pipeline). Review [Getting Started - GitHub specific prerequisites](./GettingStarted.md) for more information on these Environment Variables.
+These are tokens constructed from Environment Variables, which are defined in the Workflow (Pipeline). Review [Getting Started - GitHub specific prerequisites](./GettingStarted) for more information on these Environment Variables.
 
 #### 2. Local Custom Tokens (Source Control) [Optional]
 
@@ -54,7 +52,7 @@ These are tokens defined in the Git Repository inside a [Settings.json](https://
 
 ---
 
-#### 3. Remote Custom Tokens (Key Vault) [Optional]
+The below image compares the different token types that can be used for parameter file tokens:
 
 These are tokens that are stored in Azure Key Vault as Secrets. This allows creating tokens that are not considered to be sensitive information, but are specific to the environment (i.e. Principal IDs for Security Principals, Tenant ID).
 
@@ -96,11 +94,6 @@ The below diagram outlines the compares the different token types that can be us
 
 ### How Tokens are replaced in a Parameter File
 
- ---
-**Note**: This step is always enabled even if you do not use Local/Remote Custom Parameter File Tokens. Default Tokens are always required and are alerted upon by Pester if they do not exist in the parameter file.
-
----
-
 The below diagram illustrates the Token Replacement Functionality via the [Validate](https://github.com/Azure/ResourceModules/blob/main/.github/actions/templates/validateModuleDeploy/action.yml) and [Deploy](https://github.com/Azure/ResourceModules/blob/main/.github/actions/templates/deployModule/action.yml) Actions/Templates.
 
 <img src="./media/paramFileTokenGetTokens.jpg" alt="paramFileTokenGetKeyVault">
@@ -139,20 +132,22 @@ The below diagram illustrates the Token Replacement Functionality via the [Valid
   "adminPassword": {
     "reference": {
         "keyVault": {
-            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/platform-core-rg/providers/Microsoft.KeyVault/vaults/<<platformKeyVault>>" // Default Tokens
+            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/<<exampleLocalToken>>-keyVault"
         },
-        "secretName": "<<adminPasswordToken>>" // Custom Token
+        "secretName": "<<exampleLocalToken>>"
     }
   }
   ```
+- **3A.** The Replace Tokens function gets the default tokens from the environment variables.
+  > Default Tokens are harder to scale as they are explicitly defined in deploy/validate task, workflows and pipelines, and requires updating these components as you create more tokens.
 
-4- The user runs the modules workflow/pipeline, either from their remote branch or main branch so that it triggers the regular module deployment process.
+- **3B.** The Replace Tokens function gets local custom tokens from the [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json).
+  > Local Tokens are easier to scale as you just need to define them in this file without adding new environment variables or modifying workflows or tasks.
 
-5- The tokens will be retrieved at runtime and replaced with the original values before handed over to the validation or deployment task/step.
+- **3C.** The Replace Tokens function gets the Module Parameter file (tokenized and not deployable) and then all tokens are processed for replacement.
 
----
-**Note**: The pipeline will not fail if you are not using a Key Vault for your custom tokens but it will fail if you are using tokens that are from a key vault and those values are not available to be replaced.
+- **3D.** The updated Module Parameter file is then saved, replacing the tokenized version. This file is now 'deployable'.
 
----
+- **4A.** The Validate/Deploy function retrieves the latest updated module Parameter file.
 
-6- The Validate/Deploy task will consume the modified parameter files with the required values in order to validate/deploy the Azure resource.
+- **4B.** The Validate/Deploy function validates the deployment artifacts for the module before deploying it to the Azure Sandbox Subscription.
