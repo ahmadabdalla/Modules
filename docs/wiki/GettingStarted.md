@@ -167,7 +167,7 @@ In case you would like to simply contribute because you, for example, want to ad
 1. Fork the repository to the GitHub organization of your choice
 1. (optional but recommended) Create a branch in your fork where you'd like to implement the contribution
 1. Implement your proposed changes
-   1. In case you change module-related code (anything aside the readMe, like the template), we'd ask you do perform a test-run in your environment. For more details, please refer to the [setup fork](#fork-the-repository) section.
+   1. In case you change module-related code (anything aside the readMe.md, like the template), we'd ask you do perform a test-run in your environment. For more details, please refer to the [setup fork](#fork-the-repository) section.
 1. Open a Pull-Request to the upstream (source) repository with a meaningful description and link the corresponding issue to it
    1. If you ran a pipeline to validate your changes, please make sure to attach a reference (e.g. as a status badge) to the PR
 
