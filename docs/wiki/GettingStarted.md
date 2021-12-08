@@ -117,7 +117,7 @@ Please refer to [this list][AzureNames] to check which services have a global sc
 
 ### Dependencies
 
-As the modules we test often times have dependencies to other services, we created a pipeline to deploys several standard services like VirtualNetworks and KeyVaults (alongside dummy secrets) for the modules to use. This _dependency_ pipeline should be prepared and executed before you start running any pipelines on your own. In case you need to rename any services there (for example because a certain globally unique resource name was already taken) make sure to update any references to this name in the module parameter files. You can find further details about this pipeline [here](./TestingDesign.md#Module-Dependencies).
+As the modules we test often times have dependencies to other services, we created a pipeline to deploys several standard services like VirtualNetworks and KeyVaults (alongside dummy secrets) for the modules to use. This _dependency_ pipeline should be prepared and executed before you start running any pipelines on your own. In case you need to rename any services there (for example because a certain globally unique resource name was already taken) make sure to update any references to this name in the module parameter files. You can find further details about this pipeline [here](./TestingDesign#Module-Dependencies).
 
 ### GitHub-specific prerequisites
 
@@ -167,13 +167,13 @@ In case you would like to simply contribute because you, for example, want to ad
 1. Fork the repository to the GitHub organization of your choice
 1. (optional but recommended) Create a branch in your fork where you'd like to implement the contribution
 1. Implement your proposed changes
-   1. In case you change module-related code (anything aside the readMe.md, like the template), we'd ask you do perform a test-run in your environment. For more details, please refer to the [setup fork](#fork-the-repository) section.
+   1. In case you change module-related code (anything aside the readMe, like the template), we'd ask you do perform a test-run in your environment. For more details, please refer to the [setup fork](#fork-the-repository) section.
 1. Open a Pull-Request to the upstream (source) repository with a meaningful description and link the corresponding issue to it
    1. If you ran a pipeline to validate your changes, please make sure to attach a reference (e.g. as a status badge) to the PR
 
 ## Parameter File Tokens
 
-If you are forking or cloning the repository, you can use 'tokens' inside your parameter files. Tokens allow you to test deploying modules in your own environment (i.e. using tokens for your naming conventions), or apply other customizations to your resources (i.e. using your own subscription ID inside a Resource ID string). See details in the [Parameter File Tokens Design](./ParameterFileTokens.md).
+If you are forking or cloning the repository, you can use 'tokens' inside your parameter files. Tokens allow you to test deploying modules in your own environment (i.e. using tokens for your naming conventions), or apply other customizations to your resources (i.e. using your own subscription ID inside a Resource ID string). See details in the [Parameter File Tokens Design](./ParameterFileTokens).
 
 The repository contains a [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json) that enables you to define local tokens and store them in source control. The token format is a `name` and `value` pair as shown in the following example:
 
@@ -203,7 +203,7 @@ Once the Key Vault is deployed, you'll notice that the Key Vault name in Azure w
 > The token prefix `<<` and suffix `>>` in the above example are also configurable in the [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json) file. They are however the default used in the CARML main repository.
 
 ---
-Note: There are default tokens that can be enabled on any resource that leverages the [GitHub specific prerequisites](GettingStarted.md#github-specific-prerequisites) secrets.
+Note: There are default tokens that can be enabled on any resource that leverages the [GitHub specific prerequisites](GettingStarted#github-specific-prerequisites) secrets.
 
 - `<<subscriptionId>>`: Will point to the Azure subscription.
 - `<<managementGroupId>>`: Will point to the Azure an Azure Management Group.
@@ -211,7 +211,7 @@ Note: There are default tokens that can be enabled on any resource that leverage
 - `<<deploymentSpId>>`: Will point to the Service Principal ID used for deployments.
 - `<<resourceGroupName>>`: Will point to the Azure Resource Group where the resources are being deployed to. (This isn't defined in the secrets section but is injected at runtime)
 
-Review [Parameter File Tokens Design](./ParameterFileTokens.md) for more details.
+Review [Parameter File Tokens Design](./ParameterFileTokens) for more details.
 
 ---
 
