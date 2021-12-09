@@ -332,21 +332,27 @@ function Set-TemplateReferencesSection {
         $Type, $Resource = $resourceType.Type -split '/', 2
         $ResourceReferenceTitle = $TextInfo.ToTitleCase($Resource)
         # Validate if Reference URL Is working
+        $TemplatesBaseUrl = 'https://docs.microsoft.com/en-us/azure/templates'
         try {
-            $ResourceReferenceUrl = 'https://docs.microsoft.com/en-us/azure/templates/{0}/{1}/{2}' -f $Type, $resourceType.ApiVersion, $Resource
+            $ResourceReferenceUrl = '{0}/{1}/{2}/{3}' -f $TemplatesBaseUrl, $Type, $resourceType.ApiVersion, $Resource
             Invoke-WebRequest -Uri $ResourceReferenceUrl | Out-Null
         } catch {
             try {
-                $ResourceReferenceUrl = 'https://docs.microsoft.com/en-us/azure/templates/{0}/{1}' -f $Type, $Resource
+                $ResourceReferenceUrl = '{0}/{1}/{2}' -f $TemplatesBaseUrl, $Type, $Resource
                 Invoke-WebRequest -Uri $ResourceReferenceUrl | Out-Null
             } catch {
-                Write-Verbose $_.Exception.Response.StatusCode.value__
-                $ResourceReferenceUrl = 'https://docs.microsoft.com/en-us/azure/templates'
-                $ResourceReferenceTitle = 'Define resources with Bicep and ARM templates'
+                if ($Resource.Split('/').length -gt 1) {
+                    $ResourceReferenceUrl = '{0}/{1}/{2}' -f $TemplatesBaseUrl, $Type, $Resource.Split('/')[0]
+                    $ResourceReferenceTitle = "'$Resource' Parent Documentation"
+                } else {
+                    $ResourceReferenceUrl = '{0}' -f $TemplatesBaseUrl
+                    $ResourceReferenceTitle = 'Define resources with Bicep and ARM templates'
+                }
             }
         }
+        $sectionContent += ('- [{0}]({1})' -f $ResourceReferenceTitle, $ResourceReferenceUrl)
     }
-    $sectionContent += ('- [{0}]({1})' -f $ResourceReferenceTitle, $ResourceReferenceUrl)
+    $sectionContent = $sectionContent | Sort-Object -Unique
     # Build result
     if ($PSCmdlet.ShouldProcess('Original file with new template references content', 'Merge')) {
         $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $sectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'list'
