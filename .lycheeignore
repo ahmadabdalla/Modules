@@ -5,5 +5,4 @@ https://mykeyvault.vault.azure.net
 https://www.powershellgallery.com
 https://github.com/myProject
 http://validurltoconfiglocation/
-https://mycustomdependencylocation/
-https://docs.microsoft.com/en-us/azure/templates/
+https://myCustomDependencyLocation/

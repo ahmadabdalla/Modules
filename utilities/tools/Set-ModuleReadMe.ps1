@@ -330,9 +330,23 @@ function Set-TemplateReferencesSection {
     $TextInfo = (Get-Culture).TextInfo
     foreach ($resourceType in $relevantResourceTypes) {
         $Type, $Resource = $resourceType.Type -split '/', 2
-        $sectionContent += ('- [{0}](https://docs.microsoft.com/en-us/azure/templates/{1}/{2}/{3})' -f $TextInfo.ToTitleCase($Resource), $Type, $resourceType.ApiVersion, $Resource)
+        $ResourceReferenceTitle = $TextInfo.ToTitleCase($Resource)
+        # Validate if Reference URL Is working
+        try {
+            $ResourceReferenceUrl = 'https://docs.microsoft.com/en-us/azure/templates/{0}/{1}/{2}' -f $Type, $resourceType.ApiVersion, $Resource
+            Invoke-WebRequest -Uri $ResourceReferenceUrl | Out-Null
+        } catch {
+            try {
+                $ResourceReferenceUrl = 'https://docs.microsoft.com/en-us/azure/templates/{0}/{1}' -f $Type, $Resource
+                Invoke-WebRequest -Uri $ResourceReferenceUrl | Out-Null
+            } catch {
+                Write-Verbose $_.Exception.Response.StatusCode.value__
+                $ResourceReferenceUrl = 'https://docs.microsoft.com/en-us/azure/templates'
+                $ResourceReferenceTitle = 'Define resources with Bicep and ARM templates'
+            }
+        }
     }
-
+    $sectionContent += ('- [{0}]({1})' -f $ResourceReferenceTitle, $ResourceReferenceUrl)
     # Build result
     if ($PSCmdlet.ShouldProcess('Original file with new template references content', 'Merge')) {
         $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $sectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'list'
@@ -422,7 +436,7 @@ function Set-ModuleReadMe {
             "# $assumedResourceName ``[$fullResourcePath]``",
             '',
             "This module deploys $assumedResourceName."
-            '// TODO: Replace Resource and fill in description',
+            '/ / TODO: Replace Resource and fill in description',
             ''
             '## Resource Types',
             '',
