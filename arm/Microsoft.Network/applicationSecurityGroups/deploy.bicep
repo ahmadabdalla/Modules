@@ -26,7 +26,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource applicationSecurityGroup 'Microsoft.Network/applicationSecurityGroups@2021-02-01' = {
+resource applicationSecurityGroup 'Microsoft.Network/applicationSecurityGroups@2021-05-01' = {
   name: name
   location: location
   tags: tags
@@ -52,10 +52,10 @@ module applicationSecurityGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssi
 }]
 
 @description('The resource group the application security group was deployed into')
-output applicationSecurityGroupResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The resource ID of the application security group')
-output applicationSecurityGroupResourceId string = applicationSecurityGroup.id
+output resourceId string = applicationSecurityGroup.id
 
 @description('The name of the application security group')
-output applicationSecurityGroupName string = applicationSecurityGroup.name
+output name string = applicationSecurityGroup.name

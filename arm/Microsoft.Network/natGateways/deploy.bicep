@@ -107,10 +107,10 @@ var natGatewayPublicIPPrefix = {
 }
 
 var natGatewayPropertyPublicIPPrefixes = [for publicIpPrefix in publicIpPrefixes: {
-  id: resourceId('Microsoft.Network/publicIPPrefixes', publicIpPrefix)
+  id: az.resourceId('Microsoft.Network/publicIPPrefixes', publicIpPrefix)
 }]
 var natGatewayPropertyPublicIPAddresses = [for publicIpAddress in publicIpAddresses: {
-  id: resourceId('Microsoft.Network/publicIPAddresses', publicIpAddress)
+  id: az.resourceId('Microsoft.Network/publicIPAddresses', publicIpAddress)
 }]
 var natGatewayProperties = {
   idleTimeoutInMinutes: idleTimeoutInMinutes
@@ -125,7 +125,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 
 // PUBLIC IP
 // =========
-resource publicIP 'Microsoft.Network/publicIPAddresses@2021-02-01' = if (natGatewayPublicIpAddress) {
+resource publicIP 'Microsoft.Network/publicIPAddresses@2021-05-01' = if (natGatewayPublicIpAddress) {
   name: natGatewayPipName_var
   location: location
   tags: tags
@@ -163,7 +163,7 @@ resource publicIP_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021
 
 // NAT GATEWAY
 // ===========
-resource natGateway 'Microsoft.Network/natGateways@2021-02-01' = {
+resource natGateway 'Microsoft.Network/natGateways@2021-05-01' = {
   name: name
   location: location
   tags: tags
@@ -193,10 +193,10 @@ module natGateway_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index)
 }]
 
 @description('The name of the NAT Gateway')
-output natGatewayName string = natGateway.name
+output name string = natGateway.name
 
 @description('The resource ID of the NAT Gateway')
-output natGatewayResourceId string = natGateway.id
+output resourceId string = natGateway.id
 
 @description('The resource group the NAT Gateway was deployed into')
-output natGatewayResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

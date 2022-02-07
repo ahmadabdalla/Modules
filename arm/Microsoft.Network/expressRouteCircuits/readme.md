@@ -9,7 +9,7 @@ This template deploys an express route circuit.
 | `Microsoft.Authorization/locks` | 2017-04-01 |
 | `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
-| `Microsoft.Network/expressRouteCircuits` | 2021-02-01 |
+| `Microsoft.Network/expressRouteCircuits` | 2021-05-01 |
 
 ## Parameters
 
@@ -84,14 +84,14 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `expressRouteCircuitName` | string | The name of express route curcuit |
-| `expressRouteCircuitResourceGroup` | string | The resource group the express route curcuit was deployed into |
-| `expressRouteCircuitResourceId` | string | The resource ID of express route curcuit |
-| `expressRouteCircuitServiceKey` | string | The service key of the express route circuit |
+| `name` | string | The name of express route curcuit |
+| `resourceGroupName` | string | The resource group the express route curcuit was deployed into |
+| `resourceId` | string | The resource ID of express route curcuit |
+| `serviceKey` | string | The service key of the express route circuit |
 
 ## Template references
 
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
-- [Expressroutecircuits](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/expressRouteCircuits)
+- [Expressroutecircuits](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/expressRouteCircuits)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

@@ -116,7 +116,7 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
   }
 }]
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it\'s fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Tags of the resource.')
@@ -202,13 +202,13 @@ module dataFactory_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index
 }]
 
 @description('The Name of the Azure Data Factory instance.')
-output dataFactoryName string = dataFactory.name
+output name string = dataFactory.name
 
 @description('The Resource ID of the Data factory.')
-output dataFactoryResourceId string = dataFactory.id
+output resourceId string = dataFactory.id
 
 @description('The name of the Resource Group with the Data factory.')
-output dataFactoryResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(dataFactory.identity, 'principalId') ? dataFactory.identity.principalId : ''

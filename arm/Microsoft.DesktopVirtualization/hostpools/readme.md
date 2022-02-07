@@ -34,7 +34,7 @@ This module deploys an Azure virtual desktop host pool.
 | `name` | string |  |  | Required. Name of the Host Pool |
 | `personalDesktopAssignmentType` | string |  | `[Automatic, Direct, ]` | Optional. Set the type of assignment for a Personal Host Pool type |
 | `preferredAppGroupType` | string | `Desktop` | `[Desktop, None, RailApplications]` | Optional. The type of preferred application group type, default to Desktop Application Group |
-| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `startVMOnConnect` | bool |  |  | Optional. Enable Start VM on connect to allow users to start the virtual machine from a deallocated state. Important: Custom RBAC role required to power manage VMs. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `tokenValidityLength` | string | `PT8H` |  | Optional. Host Pool token validity length. Usage: 'PT8H' - valid for 8 hours; 'P5D' - valid for 5 days; 'P1Y' - valid for 1 year. When not provided, the token will be valid for 8 hours. |
@@ -119,9 +119,9 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `hostPoolName` | string | The name of the AVD host pool |
-| `hostPoolResourceGroup` | string | The resource group the AVD host pool was deployed into |
-| `hostPoolResourceId` | string | The resource ID of the AVD host pool |
+| `name` | string | The name of the AVD host pool |
+| `resourceGroupName` | string | The resource group the AVD host pool was deployed into |
+| `resourceId` | string | The resource ID of the AVD host pool |
 | `tokenExpirationTime` | string | The expiration time for the registration token |
 
 ## Template references
@@ -129,4 +129,4 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Hostpools](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DesktopVirtualization/2021-07-12/hostPools)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
