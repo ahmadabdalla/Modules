@@ -2,17 +2,15 @@
     "parameterFileTokens": {
         "tokenPrefix": "<<",
         "tokenSuffix": ">>",
-        "localTokens": {
-            "tokens": [
-                {
-                    "name": "namePrefix",
-                    "value": "zu3bi",
-                    "metadata": {
-                        "description": "A 3-5 character length string, included in the resources names"
-                    }
+        "localTokens": [
+            {
+                "name": "namePrefix",
+                "value": "zu3bi",
+                "metadata": {
+                    "description": "A 3-4 character length string, included in the resources names"
                 }
-            ]
-        },
+            }
+        ],
         "remoteTokens": {
             "keyVaultSecretContentType": "ParameterFileToken"
         }
