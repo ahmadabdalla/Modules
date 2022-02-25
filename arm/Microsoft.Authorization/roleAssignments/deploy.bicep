@@ -21,7 +21,7 @@ param location string = deployment().location
 @sys.description('Optional. Description of role assignment')
 param description string = ''
 
-@sys.description('Optional. Id of the delegated managed identity resource')
+@sys.description('Optional. ID of the delegated managed identity resource')
 param delegatedManagedIdentityResourceId string = ''
 
 @sys.description('Optional. The conditions on the role assignment. This limits the resources it can be assigned to')
@@ -44,7 +44,10 @@ param conditionVersion string = '2.0'
 ])
 param principalType string = ''
 
-module roleAssignment_mg '.bicep/nested_rbac_mg.bicep' = if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
+@sys.description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. Use when scope target is resource group.')
+param cuaId string = ''
+
+module roleAssignment_mg 'managementGroup/deploy.bicep' = if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
   name: '${uniqueString(deployment().name, location)}-RoleAssignment-MG-Module'
   scope: managementGroup(managementGroupId)
   params: {
@@ -59,7 +62,7 @@ module roleAssignment_mg '.bicep/nested_rbac_mg.bicep' = if (!empty(managementGr
   }
 }
 
-module roleAssignment_sub '.bicep/nested_rbac_sub.bicep' = if (empty(managementGroupId) && !empty(subscriptionId) && empty(resourceGroupName)) {
+module roleAssignment_sub 'subscription/deploy.bicep' = if (empty(managementGroupId) && !empty(subscriptionId) && empty(resourceGroupName)) {
   name: '${uniqueString(deployment().name, location)}-RoleAssignment-Sub-Module'
   scope: subscription(subscriptionId)
   params: {
@@ -74,7 +77,7 @@ module roleAssignment_sub '.bicep/nested_rbac_sub.bicep' = if (empty(managementG
   }
 }
 
-module roleAssignment_rg '.bicep/nested_rbac_rg.bicep' = if (empty(managementGroupId) && !empty(resourceGroupName) && !empty(subscriptionId)) {
+module roleAssignment_rg 'resourceGroup/deploy.bicep' = if (empty(managementGroupId) && !empty(resourceGroupName) && !empty(subscriptionId)) {
   name: '${uniqueString(deployment().name, location)}-RoleAssignment-RG-Module'
   scope: resourceGroup(subscriptionId, resourceGroupName)
   params: {
@@ -87,6 +90,7 @@ module roleAssignment_rg '.bicep/nested_rbac_rg.bicep' = if (empty(managementGro
     delegatedManagedIdentityResourceId: !empty(delegatedManagedIdentityResourceId) ? delegatedManagedIdentityResourceId : ''
     conditionVersion: conditionVersion
     condition: !empty(condition) ? condition : ''
+    cuaId: !empty(cuaId) ? cuaId : ''
   }
 }
 
