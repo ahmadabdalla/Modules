@@ -85,7 +85,7 @@ If all other tests passed, the deployment tests are the ultimate module validati
 
 Most of the resources are deleted by default after their deployment, to keep costs down and to be able to retest resource modules from scratch in the next run. However, the removal step can be skipped in case further investigation on the deployed resource is needed. For further details, please refer to the (./PipelinesUsage) section.
 
-This happens using the `.github/actions/templates/validateModuleDeploy/scripts/Test-TemplateWithParameterFile.ps1` script.
+This happens using the `utilities/pipelines/resourceDeployment/Test-TemplateWithParameterFile.ps1` script.
 
 > **Note**<br>
 Currently the list of the parameter file used to test the module is hardcoded in the module specific workflow, as the **parameterFilePaths** in the _job_deploy_module_ and _job_tests_module_deploy_validate_ jobs.
@@ -125,7 +125,10 @@ Since also dependency resources are in turn subject to dependencies with each ot
       >**Note**: This resource has a global scope name.
   1. Event hub namespace and Event hub: This resource is leveraged by all resources supporting diagnostic settings on an event hub.
       >**Note**: This resource has a global scope name.
-  1. Log analytics workspace: This resource is leveraged by all resources supporting diagnostic settings on LAW.
+  1. Log analytics workspaces: These resources are leveraged by all resources supporting diagnostic settings on LAW. Multiple instances are deployed:
+      - '_adp-\<<namePrefix\>>-az-law-x-001_': Default LAW.
+      - '_adp-\<<namePrefix\>>-az-law-aut-001_': Dedicated LAW to be leveraged by the [automation account] resource.
+      - '_adp-\<<namePrefix\>>-az-law-appi-001_': Dedicated LAW to be leveraged by the [application insights] resource.
   1. User assigned identity: This resource is leveraged by the [role assignment], [key vault] and [recovery services vault] dependency resources.
       > **Note**: The object ID of the [user assigned identity] is needed by several dependency parameter files. However, before running the dependency pipeline for the first time, the [user assigned identity] resource does not exist yet, thus its object ID is unknown. For this reason, instead of the object ID value, some dependency parameter files contain the `"<<msiPrincipalId>>"` token, for which the correct value is retrieved and replaced by the pipeline at runtime.
   1. Shared image gallery and definition: These resources are leveraged by the [image template] resource.
