@@ -39,7 +39,7 @@ param nonComplianceMessage string = ''
 ])
 param enforcementMode string = 'Default'
 
-@sys.description('Optional. The Target Scope for the Policy. The name of the management group for the policy assignment')
+@sys.description('Optional. The Target Scope for the Policy. The name of the management group for the policy assignment. If not provided, will use the current scope for deployment.')
 param managementGroupId string = managementGroup().name
 
 @sys.description('Optional. The Target Scope for the Policy. The subscription ID of the subscription for the policy assignment')
