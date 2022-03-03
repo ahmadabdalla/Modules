@@ -90,15 +90,16 @@ jobs:
       - name: 'Set GitHub Actions Environment Variables'
         shell: pwsh
         run: |
-
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-GitHubEnvVariables.ps1')
-
           # Load Settings File
-          $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json -AsHashTable
-          $KeyValuePair = $Settings.pipelines.githubActions.variables
+          $KeyValuePair = (Get-Content -Path "settings.json" | ConvertFrom-Json -AsHashTable).pipelines.githubActions.variables
           Set-GitHubEnvVariable -KeyValuePair $KeyValuePair
-
+      - name: 'test environment variables'
+        shell: pwsh
+        run: |
+          write-host "Testing Environment Variables"
+          write-host "env.templateSpecsRGLocation ===> ${{ env.templateSpecsRGLocation }}"
       #- name: Set environment variables
       #  uses: deep-mm/set-variables@v1.0
       #  with:
@@ -117,18 +118,23 @@ jobs:
   ###############
   #   PUBLISH   #
   ###############
-  #job_publish_module:
-  #  name: 'Publish module'
-  #  if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.event.inputs.prerelease == 'true'
-  #  runs-on: ubuntu-20.04
-  #  needs:
-  #    - job_set_workflow_param
-  #    - job_module_deploy_validation
-  #  steps:
-  #    - name: 'Checkout'
-  #      uses: actions/checkout@v2
-  #      with:
-  #        fetch-depth: 0
+  job_publish_module:
+    name: 'Publish module'
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.event.inputs.prerelease == 'true'
+    runs-on: ubuntu-20.04
+    needs:
+      - job_set_workflow_param
+      - job_module_deploy_validation
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: 'test environment variables'
+        shell: pwsh
+        run: |
+          write-host "Testing Environment Variables"
+          write-host "env.templateSpecsRGLocation ===> ${{ env.templateSpecsRGLocation }}"
   #    - name: Set environment variables
   #      uses: deep-mm/set-variables@v1.0
   #      with:
