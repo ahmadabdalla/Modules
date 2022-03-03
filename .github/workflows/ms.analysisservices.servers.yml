@@ -2,27 +2,27 @@ name: 'AnalysisServices: Servers'
 
 on:
   workflow_dispatch:
-    inputs:
-      removeDeployment:
-        type: boolean
-        description: 'Remove deployed module'
-        required: false
-        default: 'true'
-      prerelease:
-        type: boolean
-        description: 'Publish prerelease module'
-        required: false
-        default: 'false'
-  push:
-    branches:
-      - main
-    paths:
-      - '.github/actions/templates/**'
-      - '.github/workflows/ms.analysisservices.servers.yml'
-      - 'arm/Microsoft.AnalysisServices/servers/**'
-      - '!*/**/readme.md'
-      - 'utilities/pipelines/**'
-      - '!utilities/pipelines/dependencies/**'
+  #inputs:
+  #  removeDeployment:
+  #    type: boolean
+  #    description: 'Remove deployed module'
+  #    required: false
+  #    default: 'true'
+  #  prerelease:
+  #    type: boolean
+  #    description: 'Publish prerelease module'
+  #    required: false
+  #    default: 'false'
+  #push:
+  #  branches:
+  #    - main
+  #  paths:
+  #    - '.github/actions/templates/**'
+  #    - '.github/workflows/ms.analysisservices.servers.yml'
+  #    - 'arm/Microsoft.AnalysisServices/servers/**'
+  #    - '!*/**/readme.md'
+  #    - 'utilities/pipelines/**'
+  #    - '!utilities/pipelines/dependencies/**'
 
 env:
   settingsPath: 'settings.json'
