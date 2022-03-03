@@ -75,9 +75,9 @@ jobs:
   job_module_deploy_validation:
     runs-on: ubuntu-20.04
     name: 'Deployment tests'
-    needs:
-      - job_set_workflow_param
-      - job_module_pester_validation
+    #needs:
+    #  - job_set_workflow_param
+    #  - job_module_pester_validation
     strategy:
       fail-fast: false
       matrix:
