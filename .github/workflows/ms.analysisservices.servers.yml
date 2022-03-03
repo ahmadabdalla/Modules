@@ -25,7 +25,6 @@ on:
   #    - '!utilities/pipelines/dependencies/**'
 
 env:
-  settingsPath: 'settings.json'
   modulePath: 'arm/Microsoft.AnalysisServices/servers'
   workflowPath: '.github/workflows/ms.analysisservices.servers.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
@@ -36,24 +35,23 @@ env:
 
 jobs:
   ###########################
-  #  VERIFY FEATURE FLAGS   #
+  #  Platform Settings      #
   ###########################
-  job_verify_feature_flags:
+  job_platformSettings:
     runs-on: ubuntu-20.04
-    name: 'Verify Feature Flags'
+    name: 'Checkout Platform Settings'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: 'Prepare Environment'
-        id: get-feature-flags
-        uses: ./.github/actions/templates/prepareEnvironment
+      - name: 'Get platform settings from [settings.json]'
+        id: settings
+        uses: ./.github/actions/templates/getPlatformSettings
         with:
-          settingsPath: '${{ env.settingsPath}}'
+          settingsPath: 'settings.json'
     outputs:
-      resourceModules_publishing: ${{ steps.get-feature-flags.outputs.resourceModules_publishing }}
-      featureFlags: ${{ steps.get-feature-flags.outputs.featureFlags }}
+      featureFlags: ${{ steps.settings.outputs.featureFlags }}
 
   ############################
   #   SET INPUT PARAMETERS   #
@@ -93,26 +91,26 @@ jobs:
   ####################
   # Deployment tests #
   ####################
-  #job_module_deploy_validation:
-  #  runs-on: ubuntu-20.04
-  #  name: 'Deployment tests'
-  #  #needs:
-  #  #  - job_set_workflow_param
-  #  #  - job_module_pester_validation
-  #  strategy:
-  #    fail-fast: false
-  #    matrix:
-  #      parameterFilePaths: ['min.parameters.json'] #, 'parameters.json']
-  #  steps:
-  #    - name: 'Checkout'
-  #      uses: actions/checkout@v2
-  #      with:
-  #        fetch-depth: 0
-  #    - name: 'Prepare Environment'
-  #      id: set-env-variables-step
-  #      uses: ./.github/actions/templates/prepareEnvironment
-  #      with:
-  #        settingsPath: '${{ env.settingsPath}}'
+  job_module_deploy_validation:
+    runs-on: ubuntu-20.04
+    name: 'Deployment tests'
+    needs:
+      - job_platformSettings
+    #  - job_set_workflow_param
+    #  - job_module_pester_validation
+    strategy:
+      fail-fast: false
+      matrix:
+        parameterFilePaths: ['min.parameters.json'] #, 'parameters.json']
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: 'Set Environment Variables'
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          settingsPath: 'settings.json'
   #    #- name: 'Using parameter file [${{ matrix.parameterFilePaths }}]'
   #    #  uses: ./.github/actions/templates/validateModuleDeployment
   #    #  with:
@@ -130,12 +128,12 @@ jobs:
   job_publish_module:
     name: 'Publish module'
     #if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.event.inputs.prerelease == 'true'
-    if: ${{ fromJSON(needs.job_verify_feature_flags.outputs.featureFlags).resourceModules_publishing == true }}
+    if: ${{ fromJSON(needs.job_platformSettings.outputs.featureFlags).resourceModules_publishing == true }}
     runs-on: ubuntu-20.04
     needs:
-      - job_verify_feature_flags
+      - job_platformSettings
       #  - job_set_workflow_param
-      #- job_module_deploy_validation
+      - job_module_deploy_validation
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -146,9 +144,8 @@ jobs:
         run: |
           write-host "Testing Environment Variables"
           write-host "env.templateSpecsRGLocation ===> $env:templateSpecsRGLocation"
-          write-host "resourceModules_publishing ===> ${{ needs.job_verify_feature_flags.outputs.resourceModules_publishing }}"
-          write-host "featureFlags ===> ${{ needs.job_verify_feature_flags.outputs.featureFlags }}"
-          write-host "resourceModules_publishing ===> ${{ fromJSON(needs.job_verify_feature_flags.outputs.featureFlags).resourceModules_publishing }}"
+          write-host "featureFlags ===> ${{ needs.job_platformSettings.outputs.featureFlags }}"
+          write-host "resourceModules_publishing ===> ${{ fromJSON(needs.job_platformSettings.outputs.featureFlags).resourceModules_publishing }}"
   #    - name: Set environment variables
   #      uses: deep-mm/set-variables@v1.0
   #      with:

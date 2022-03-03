@@ -1,0 +1,28 @@
+name: 'Checkout CARML Platform Settings'
+description: 'Checkout CARML Platform Settings'
+
+inputs:
+  settingsPath:
+    description: 'The path to the CARML settings JSON file'
+    required: true
+
+outputs:
+  # Feature Flags
+  featureFlags:
+    value: ${{ steps.get-feature-flags.outputs.featureFlags }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: 'Get Feature Flags'
+      id: get-feature-flags
+      shell: pwsh
+      run: |
+
+        # Load Settings File
+        $Settings = Get-Content -Path ${{ inputs.settingsPath }} | ConvertFrom-Json -AsHashTable
+
+        # Get Feature Flags
+        $featuresFlagsJSON = $Settings.featureFlags | ConvertTo-Json -Compress
+        Write-Output "::set-output name=featureFlags::$featuresFlagsJSON"
+

@@ -12,12 +12,6 @@ outputs:
     description: 'Environment Variables'
     value: ${{ steps.set-env-variables.outputs.environmentVariables }}
 
-  # Feature Flags
-  featureFlags:
-    value: ${{ steps.get-feature-flags.outputs.featureFlags }}
-  resourceModules_publishing:
-    value: ${{ steps.get-feature-flags.outputs.resourceModules_publishing }}
-
 runs:
   using: 'composite'
   steps:
@@ -40,25 +34,3 @@ runs:
 
         # Output values to be accessed by next jobs
         Write-Output "::set-output name=environmentVariables::$EnvironmentVariables"
-
-    - name: 'Get Feature Flags'
-      id: get-feature-flags
-      shell: pwsh
-      run: |
-        # Load used functions
-        . "$env:GITHUB_ACTION_PATH/scripts/Set-GitHubEnvVariables.ps1"
-
-        # Load Settings File
-        $Settings = Get-Content -Path ${{ inputs.settingsPath }} | ConvertFrom-Json -AsHashTable
-
-        # Get Feature Flags
-        $features = $Settings.featureFlags.Keys
-        foreach($feature in $features){
-            $flag = $($Settings.featureFlags[$feature]).ToString().tolower()
-            Write-Output "::set-output name=$feature::$flag"
-        }
-
-        # Output All Feature Flags
-        $featuresFlagsJSON = $Settings.featureFlags | ConvertTo-Json -Compress
-        Write-Output "::set-output name=featureFlags::$featuresFlagsJSON"
-
