@@ -14,7 +14,7 @@ outputs:
 
   # Feature Flags
   featureFlags:
-  value: ${{ steps.get-feature-flags.outputs.featureFlags }}
+    value: ${{ steps.get-feature-flags.outputs.featureFlags }}
   resourceModules_publishing:
     value: ${{ steps.get-feature-flags.outputs.resourceModules_publishing }}
 
