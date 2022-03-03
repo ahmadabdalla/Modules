@@ -6,7 +6,7 @@
         "resourceModules_dependencyPipeline": true,
         "pipelines_githubActions": true,
         "pipelines_azureDevOps": true,
-        "resourceModules_publishing": false,
+        "resourceModules_publishing": true,
         "resourceModules_publishing_azureDevOpsArtifacts.": true,
         "resourceModules_publishing_bicepRegistry.": true,
         "resourceModules_publishing_templateSpecs.": true
