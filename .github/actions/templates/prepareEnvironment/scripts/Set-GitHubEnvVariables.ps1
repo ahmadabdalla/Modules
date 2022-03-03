@@ -18,7 +18,7 @@ function Set-GitHubEnvVariable {
         [Parameter(Mandatory)]
         [hashtable] $KeyValuePair,
         [Parameter(Mandatory = $false)]
-        [bool] $ReturnVariable = $true
+        [bool] $ReturnVariable = $false
     )
     $Keys = $KeyValuePair.Keys.split(' ')
     foreach ($Key in $Keys) {

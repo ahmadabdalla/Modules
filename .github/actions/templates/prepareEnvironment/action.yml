@@ -32,7 +32,7 @@ runs:
         $GitHub_EnvironmentVariables = $Settings.pipelines.githubActions.variables
 
         # Set Environment Variables
-        $EnvironmentVariables = Set-GitHubEnvVariable -KeyValuePair ($Shared_EnvironmentVariables + $GitHub_EnvironmentVariables) -ReturnVariable $true
+        $EnvironmentVariables = Set-GitHubEnvVariable -KeyValuePair ($Shared_EnvironmentVariables + $GitHub_EnvironmentVariables)
 
         # Output values to be accessed by next jobs
         Write-Output "::set-output name=environmentVariables::$EnvironmentVariables"
