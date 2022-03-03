@@ -18,14 +18,11 @@ function Set-GitHubEnvVariable {
         [Parameter(Mandatory)]
         [hashtable] $KeyValuePair
     )
-    $Keys = $KeyValuePair.Keys
+    $Keys = $KeyValuePair.Keys.split(' ')
     foreach ($Key in $Keys) {
-        Write-Host "$Key=$($KeyValuePair[$Key])"
         if (Test-Path $Env:GITHUB_ENV -ErrorAction SilentlyContinue) {
-            Write-Host "Creating Environment Variables $($Key=$KeyValuePair[$Key])"
             Write-Output "$Key=$($KeyValuePair[$Key])" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf-8 -Append
         }
         #[System.Environment]::SetEnvironmentVariable($Key, $KeyValuePair[$Key])
     }
-    Get-Content -Path $Env:GITHUB_ENV
 }
