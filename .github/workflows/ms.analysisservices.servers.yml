@@ -112,16 +112,16 @@ jobs:
         uses: ./.github/actions/templates/setEnvironmentVariables
         with:
           settingsPath: 'settings.json'
-  #    #- name: 'Using parameter file [${{ matrix.parameterFilePaths }}]'
-  #    #  uses: ./.github/actions/templates/validateModuleDeployment
-  #    #  with:
-  #    #    templateFilePath: '${{ env.modulePath }}/deploy.bicep'
-  #    #    parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
-  #    #    location: '${{ env.defaultLocation }}'
-  #    #    resourceGroupName: '${{ env.resourceGroupName }}'
-  #    #    subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-  #    #    managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-  #    #    removeDeployment: '${{ needs.job_set_workflow_param.outputs.removeDeployment }}'
+      - name: 'Using parameter file [${{ matrix.parameterFilePaths }}]'
+        uses: ./.github/actions/templates/validateModuleDeployment
+        with:
+          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
+          parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.defaultLocation }}'
+          resourceGroupName: '${{ env.resourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ needs.job_set_workflow_param.outputs.removeDeployment }}'
 
   ###############
   #   PUBLISH   #
