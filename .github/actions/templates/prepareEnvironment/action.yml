@@ -7,15 +7,20 @@ inputs:
     required: true
 
 outputs:
+  # Environment Variables
   environmentVariables:
     description: 'Environment Variables'
-    value: ${{ steps.set-env-variables-action.outputs.environmentVariables }}
+    value: ${{ steps.set-env-variables.outputs.environmentVariables }}
+
+  # Feature Flags
+  resourceModules_publishing:
+    value: ${{ steps.get-feature-flags.outputs.resourceModules_publishing }}
 
 runs:
   using: 'composite'
   steps:
     - name: 'Get and Combine Environment Variables'
-      id: set-env-variables-action
+      id: set-env-variables
       run: |
 
         # Grouping task logs
@@ -36,6 +41,30 @@ runs:
 
         # Output values to be accessed by next jobs
         Write-Output "::set-output name=environmentVariables::$EnvironmentVariables"
+
+        Write-Output "::endgroup::"
+
+      shell: pwsh
+
+    - name: 'Get Feature Flags'
+      id: get-feature-flags
+      run: |
+
+        # Grouping task logs
+        Write-Output "::group::Get and Return Feature Flags"
+
+        # Load used functions
+        . "$env:GITHUB_ACTION_PATH/scripts/Set-GitHubEnvVariables.ps1"
+
+        # Load Settings File
+        $Settings = Get-Content -Path ${{ inputs.settingsPath }} | ConvertFrom-Json -AsHashTable
+
+        # Get Feature Flags
+        $features = $Settings.featureFlags.Keys
+
+        foreach($feature in $features){
+            Write-Output "::set-output name=$feature::$($Settings.featureFlags[$feature])"
+        }
 
         Write-Output "::endgroup::"
 

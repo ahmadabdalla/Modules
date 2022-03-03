@@ -1,4 +1,16 @@
 {
+    "featureFlags": {
+        "resourceModules_pesterTests": true,
+        "resourceModules_testDeployment": true,
+        "resourceModules_deployment": true,
+        "resourceModules_dependencyPipeline": true,
+        "pipelines_githubActions": true,
+        "pipelines_azureDevOps": true,
+        "resourceModules_publishing": true,
+        "resourceModules_publishing_azureDevOpsArtifacts.": true,
+        "resourceModules_publishing_bicepRegistry.": true,
+        "resourceModules_publishing_templateSpecs.": true
+    },
     "pipelines": {
         "shared": {
             "variables": {
@@ -7,7 +19,6 @@
             }
         },
         "githubActions": {
-            "enabled": true,
             "variables": {
                 "defaultLocation": "WestEurope",
                 "resourceGroupNamee": "validation-rg",
@@ -22,7 +33,6 @@
             }
         },
         "azureDevOps": {
-            "enabled": true,
             "variables": {
                 "vmImage": "ubuntu-latest",
                 "poolName": "",
@@ -41,42 +51,32 @@
     },
     "resourceModules": {
         "pesterTests": {
-            "enabled": true,
             "testsPath": "arm/.global"
         },
         "testDeployment": {
-            "enabled": true,
             "resourceGroupName": "validaton-rg",
             "defaultLocation": "WestEurope"
         },
         "deployment": {
-            "enabled": true,
             "resourceGroupName": "validaton-rg",
             "defaultLocation": "WestEurope"
         },
         "publishing": {
-            "enabled": true,
             "azureDevOpsArtifacts": {
-                "enabled": true,
                 "vstsFeedName": "ResourceModules",
                 "vstsFeedProject": "$(System.TeamProject)", // Move away from storing this (pass directly to script)
                 "vstsFeedToken": "$(System.AccessToken)" // Move away from storing this (pass directly to script)
             },
             "bicepRegistry": {
-                "enabled": true,
                 "name": "adpsxxazacrx001",
                 "resourceGroupName": "artifacts-rg",
                 "location": "WestEurope"
             },
             "templateSpecs": {
-                "enabled": true,
                 "description": "This is a module from the [Common Azure Resource Modules Library]",
                 "resourceGroupName": "artifacts-rg",
                 "location": "WestEurope"
             }
-        },
-        "dependencyPipeline": {
-            "enabled": true
         }
     },
     "parameterFileTokens": {

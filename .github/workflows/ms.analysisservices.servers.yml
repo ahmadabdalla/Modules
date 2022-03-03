@@ -35,6 +35,25 @@ env:
   DEPLOYMENT_SP_ID: '${{ secrets.DEPLOYMENT_SP_ID }}'
 
 jobs:
+  ###########################
+  #  VERIFY FEATURE FLAGS   #
+  ###########################
+  job_verify_feature_flags:
+    runs-on: ubuntu-20.04
+    name: 'Verify Feature Flags'
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: 'Prepare Environment'
+        id: get-feature-flags
+        uses: ./.github/actions/templates/prepareEnvironment
+        with:
+          settingsPath: '${{ env.settingsPath}}'
+    outputs:
+      resourceModules_publishing: ${{ steps.get-feature-flags.outputs.resourceModules_publishing }}
+
   ############################
   #   SET INPUT PARAMETERS   #
   ############################
@@ -93,16 +112,16 @@ jobs:
         uses: ./.github/actions/templates/prepareEnvironment
         with:
           settingsPath: '${{ env.settingsPath}}'
-      - name: 'Using parameter file [${{ matrix.parameterFilePaths }}]'
-        uses: ./.github/actions/templates/validateModuleDeployment
-        with:
-          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
-          parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
-          resourceGroupName: '${{ env.resourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-          #removeDeployment: '${{ needs.job_set_workflow_param.outputs.removeDeployment }}'
+      #- name: 'Using parameter file [${{ matrix.parameterFilePaths }}]'
+      #  uses: ./.github/actions/templates/validateModuleDeployment
+      #  with:
+      #    templateFilePath: '${{ env.modulePath }}/deploy.bicep'
+      #    parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
+      #    location: '${{ env.defaultLocation }}'
+      #    resourceGroupName: '${{ env.resourceGroupName }}'
+      #    subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+      #    managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+      #    removeDeployment: '${{ needs.job_set_workflow_param.outputs.removeDeployment }}'
 
   ###############
   #   PUBLISH   #
@@ -110,8 +129,10 @@ jobs:
   job_publish_module:
     name: 'Publish module'
     #if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.event.inputs.prerelease == 'true'
+    if: ${{ needs.job_verify_feature_flags.outputs.resourceModules_publishing }} == 'true'
     runs-on: ubuntu-20.04
     needs:
+      - job_verify_feature_flags
       #  - job_set_workflow_param
       - job_module_deploy_validation
     steps:
