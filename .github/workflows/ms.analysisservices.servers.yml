@@ -99,7 +99,7 @@ jobs:
         shell: pwsh
         run: |
           write-host "Testing Environment Variables"
-          write-host "env.templateSpecsRGLocation ===> $env:templateSpecsRGLocation"
+          write-host "env.templateSpecsRGLocation ===> ${{ env.templateSpecsRGLocation }}"
       #- name: Set environment variables
       #  uses: deep-mm/set-variables@v1.0
       #  with:
