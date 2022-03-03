@@ -96,7 +96,7 @@ jobs:
 
           # Load Settings File
           $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json -AsHashTable
-          $KeyValuePair = $settingsObj.pipelines.githubActions.variables
+          $KeyValuePair = $Settings.pipelines.githubActions.variables
           Set-GitHubEnvVariable -KeyValuePair $KeyValuePair
 
       #- name: Set environment variables
