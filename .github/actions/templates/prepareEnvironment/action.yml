@@ -24,7 +24,7 @@ runs:
       run: |
 
         # Grouping task logs
-        Write-Output "::group::Get and Combine Environment Variables"
+        #Write-Output "::group::Get and Combine Environment Variables"
 
         # Load used functions
         . "$env:GITHUB_ACTION_PATH/scripts/Set-GitHubEnvVariables.ps1"
@@ -42,7 +42,7 @@ runs:
         # Output values to be accessed by next jobs
         Write-Output "::set-output name=environmentVariables::$EnvironmentVariables"
 
-        Write-Output "::endgroup::"
+        #Write-Output "::endgroup::"
 
       shell: pwsh
 
@@ -51,7 +51,7 @@ runs:
       run: |
 
         # Grouping task logs
-        Write-Output "::group::Get and Return Feature Flags"
+        #Write-Output "::group::Get and Return Feature Flags"
 
         # Load used functions
         . "$env:GITHUB_ACTION_PATH/scripts/Set-GitHubEnvVariables.ps1"
@@ -67,6 +67,6 @@ runs:
             Write-Output "::set-output name=$feature::$($Settings.featureFlags[$feature])"
         }
 
-        Write-Output "::endgroup::"
+        #Write-Output "::endgroup::"
 
       shell: pwsh
