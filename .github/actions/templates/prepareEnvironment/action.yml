@@ -54,6 +54,6 @@ runs:
 
         foreach($feature in $features){
             Write-Host "::set-output name=$feature::$($Settings.featureFlags[$feature])"
-            Write-Output "::set-output name=$feature::$($Settings.featureFlags[$feature])"
+            Write-Output "::set-output name=$feature::$($Settings.featureFlags[$feature]).ToString().tolower()"
         }
 
