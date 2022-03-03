@@ -53,6 +53,7 @@ jobs:
           settingsPath: '${{ env.settingsPath}}'
     outputs:
       resourceModules_publishing: ${{ steps.get-feature-flags.outputs.resourceModules_publishing }}
+      featureFlags: ${{ steps.get-feature-flags.outputs.featureFlags }}
 
   ############################
   #   SET INPUT PARAMETERS   #
@@ -146,6 +147,8 @@ jobs:
           write-host "Testing Environment Variables"
           write-host "env.templateSpecsRGLocation ===> $env:templateSpecsRGLocation"
           write-host "resourceModules_publishing ===> ${{ needs.job_verify_feature_flags.outputs.resourceModules_publishing }}"
+          write-host "featureFlags ===> ${{ needs.job_verify_feature_flags.outputs.featureFlags }}"
+          '${{ needs.job_verify_feature_flags.outputs.featureFlags }} | ConvertFrom-Json
   #    - name: Set environment variables
   #      uses: deep-mm/set-variables@v1.0
   #      with:
