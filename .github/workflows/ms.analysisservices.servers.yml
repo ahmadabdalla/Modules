@@ -25,6 +25,7 @@ on:
       - '!utilities/pipelines/dependencies/**'
 
 env:
+  settingsPath: 'settings.json'
   modulePath: 'arm/Microsoft.AnalysisServices/servers'
   workflowPath: '.github/workflows/ms.analysisservices.servers.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
@@ -87,14 +88,11 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: 'Set GitHub Actions Environment Variables'
-        shell: pwsh
-        run: |
-          # Load used functions
-          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-GitHubEnvVariables.ps1')
-          # Load Settings File
-          $KeyValuePair = (Get-Content -Path "settings.json" | ConvertFrom-Json -AsHashTable).pipelines.githubActions.variables
-          Set-GitHubEnvVariable -KeyValuePair $KeyValuePair
+      - name: 'Prepare Environment'
+        id: set-env-variables-step
+        uses: ./.github/actions/templates/prepareEnvironment
+        with:
+          settingsPath: '${{ env.settingsPath}}'
       - name: 'test environment variables'
         shell: pwsh
         run: |

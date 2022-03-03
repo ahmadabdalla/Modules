@@ -1,5 +1,11 @@
 {
     "pipelines": {
+        "shared": {
+            "variables": {
+                "sharedVariable1Key": "sharedVariable1Value",
+                "sharedVariable2Key": "sharedVariable2Value"
+            }
+        },
         "githubActions": {
             "enabled": true,
             "variables": {

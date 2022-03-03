@@ -1,0 +1,42 @@
+name: 'Prepare CARML GitHub Actions Environment'
+description: 'Prepare CARML GitHub Actions Environment'
+
+inputs:
+  settingsPath:
+    description: 'The path to the CARML settings JSON file'
+    required: true
+
+outputs:
+  environmentVariables:
+    description: 'Environment Variables'
+    value: ${{ steps.set-env-variables-action.outputs.environmentVariables }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: 'Get and Combine Environment Variables'
+      id: set-env-variables-action
+      run: |
+
+        # Grouping task logs
+        Write-Output "::group::Get and Combine Environment Variables"
+
+        # Load used functions
+        . "$env:GITHUB_ACTION_PATH/scripts/Set-GitHubEnvVariables.ps1"
+
+        # Load Settings File
+        $Settings = Get-Content -Path ${{ inputs.settingsPath }} | ConvertFrom-Json -AsHashTable
+
+        # Extract Environment Variables
+        $Shared_EnvironmentVariables = $Settings.pipelines.shared.variables
+        $GitHub_EnvironmentVariables = $Settings.pipelines.githubActions.variables
+
+        # Set Environment Variables
+        $EnvironmentVariables = Set-GitHubEnvVariable -KeyValuePair ($Shared_EnvironmentVariables + $GitHub_EnvironmentVariables) -ReturnVariable $true
+
+        # Output values to be accessed by next jobs
+        Write-Output "::set-output name=environmentVariables::$EnvironmentVariables"
+
+        Write-Output "::endgroup::"
+
+      shell: pwsh

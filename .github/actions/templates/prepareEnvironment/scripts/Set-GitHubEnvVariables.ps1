@@ -16,7 +16,9 @@ function Set-GitHubEnvVariable {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)]
-        [hashtable] $KeyValuePair
+        [hashtable] $KeyValuePair,
+        [Parameter(Mandatory = $false)]
+        [bool] $ReturnVariable = $true
     )
     $Keys = $KeyValuePair.Keys.split(' ')
     foreach ($Key in $Keys) {
@@ -24,5 +26,10 @@ function Set-GitHubEnvVariable {
             Write-Output "$Key=$($KeyValuePair[$Key])" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf-8 -Append
         }
         #[System.Environment]::SetEnvironmentVariable($Key, $KeyValuePair[$Key])
+        $EnvironmentVariables += "$Key=$($KeyValuePair[$Key])`n"
+    }
+    # Output environment variable content
+    if ($ReturnVariable) {
+        return [string]$EnvironmentVariables
     }
 }
