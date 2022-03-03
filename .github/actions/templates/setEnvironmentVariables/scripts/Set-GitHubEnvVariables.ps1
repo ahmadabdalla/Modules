@@ -23,6 +23,7 @@ function Set-GitHubEnvVariable {
     $Keys = $KeyValuePair.Keys.split(' ')
     foreach ($Key in $Keys) {
         if (Test-Path $Env:GITHUB_ENV -ErrorAction SilentlyContinue) {
+            Write-Verbose "$Key=$($KeyValuePair[$Key])"
             Write-Output "$Key=$($KeyValuePair[$Key])" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf-8 -Append
         }
         #[System.Environment]::SetEnvironmentVariable($Key, $KeyValuePair[$Key])

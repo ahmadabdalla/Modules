@@ -94,6 +94,7 @@ jobs:
   job_module_deploy_validation:
     runs-on: ubuntu-20.04
     name: 'Deployment tests'
+    if: ${{ fromJSON(needs.job_platformSettings.outputs.featureFlags).resourceModules_deployment == true }}
     needs:
       - job_platformSettings
     #  - job_set_workflow_param
