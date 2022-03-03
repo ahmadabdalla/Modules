@@ -145,6 +145,7 @@ jobs:
         run: |
           write-host "Testing Environment Variables"
           write-host "env.templateSpecsRGLocation ===> $env:templateSpecsRGLocation"
+          write-host "resourceModules_publishing ===> ${{ needs.job_verify_feature_flags.outputs.resourceModules_publishing }}"
   #    - name: Set environment variables
   #      uses: deep-mm/set-variables@v1.0
   #      with:
