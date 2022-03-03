@@ -130,7 +130,7 @@ jobs:
   job_publish_module:
     name: 'Publish module'
     #if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.event.inputs.prerelease == 'true'
-    if: ${{ fromJSON(needs.job_verify_feature_flags.outputs.featureFlags).resourceModules_publishing == 'true' }}
+    if: ${{ needs.job_verify_feature_flags.outputs.resourceModules_publishing == 'true' }}
     runs-on: ubuntu-20.04
     needs:
       - job_verify_feature_flags
@@ -148,7 +148,7 @@ jobs:
           write-host "env.templateSpecsRGLocation ===> $env:templateSpecsRGLocation"
           write-host "resourceModules_publishing ===> ${{ needs.job_verify_feature_flags.outputs.resourceModules_publishing }}"
           write-host "featureFlags ===> ${{ needs.job_verify_feature_flags.outputs.featureFlags }}"
-          '${{ needs.job_verify_feature_flags.outputs.featureFlags }}' | ConvertFrom-Json
+          '${{ fromJSON(needs.job_verify_feature_flags.outputs.featureFlags) }}'
   #    - name: Set environment variables
   #      uses: deep-mm/set-variables@v1.0
   #      with:
