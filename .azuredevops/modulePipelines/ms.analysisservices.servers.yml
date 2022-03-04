@@ -58,8 +58,8 @@ stages:
           someName: $[ stageDependencies.PlatformSettings.job_platformSettings.outputs['task_featureFlags.featureFlags'] ]
         steps:
           - task: PowerShell@2
-            name: task_featureFlags
-            displayName: 'Get Feature Flags'
+            name: task_test_environment
+            displayName: 'Test Environment'
             inputs:
               targetType: inline
               pwsh: true
