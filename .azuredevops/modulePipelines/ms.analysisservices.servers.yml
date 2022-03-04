@@ -43,7 +43,7 @@ stages:
   #    - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
 
   - stage: Deployment
-    #condition: eq(stageDependencies.PlatformSettings.job_platformSettings.outputs['task_featureFlags.resourceModules_deployment'], 'true')
+    condition: eq(variables.resourceModules_deployment, 'true')
     variables:
       resourceModules_deployment: $[ stageDependencies.PlatformSettings.job_platformSettings.outputs['task_featureFlags.resourceModules_deployment'] ]
     dependsOn: PlatformSettings
