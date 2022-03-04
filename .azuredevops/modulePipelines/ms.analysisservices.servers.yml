@@ -45,7 +45,7 @@ stages:
   - stage: Deployment
     variables:
       testVar: $[ stageDependencies.PlatformSettings.job_platformSettings.outputs['task_featureFlags.resourceModules_deployment'] ]
-    condition: eq([ stageDependencies.PlatformSettings.job_platformSettings.outputs['task_featureFlags.resourceModules_deployment'] ], 'true')
+    condition: eq(variables[ stageDependencies.PlatformSettings.job_platformSettings.outputs['task_featureFlags.resourceModules_deployment'] ], 'true')
     dependsOn: PlatformSettings
     displayName: Deployment tests
     jobs:
