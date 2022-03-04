@@ -44,8 +44,8 @@ stages:
 
   - stage: Deployment
     variables:
-      test: $[ stageDependencies.PlatformSettings.job_platformSettings.outputs['task_featureFlags.featureFlags'] ]
-    condition: eq(variables.test, 'true')
+      testVar: $[ stageDependencies.PlatformSettings.job_platformSettings.outputs['task_featureFlags.featureFlags'] ]
+    condition: eq(variables.testVar, 'true')
     dependsOn: PlatformSettings
     displayName: Deployment tests
     jobs:
@@ -68,6 +68,7 @@ stages:
               pwsh: true
               script: |
                 '$(someName)' | ConvertFrom-Json
+                '$(testVar)'
 
   #- stage: Publishing
   #  displayName: Publish module
