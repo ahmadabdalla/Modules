@@ -45,7 +45,7 @@ stages:
   - stage: Deployment
     variables:
       testVar: $[ stageDependencies.PlatformSettings.job_platformSettings.outputs['task_featureFlags.featureFlags'] ]
-    condition: eq(variables.testVar, 'true')
+    condition: eq('true', 'true')
     dependsOn: PlatformSettings
     displayName: Deployment tests
     jobs:
