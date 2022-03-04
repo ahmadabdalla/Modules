@@ -1,5 +1,5 @@
-name: 'Checkout CARML Platform Settings'
-description: 'Checkout CARML Platform Settings'
+name: 'Checkout Platform Settings'
+description: 'Checkout Platform Settings'
 
 inputs:
   settingsPath:

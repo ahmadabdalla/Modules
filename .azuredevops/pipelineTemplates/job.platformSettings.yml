@@ -1,0 +1,48 @@
+parameters:
+  # Pipeline-related parameters
+  checkoutRepositories: ''
+  displayName: 'Checkout Platform Settings'
+  serviceConnection: '$(serviceConnection)'
+  poolName: '$(poolName)'
+  vmImage: '$(vmImage)'
+  defaultJobTimeoutInMinutes: 120
+
+  # Job specific parameters
+  settingsPath: ''
+
+##---------------------------------------------##
+## TEMPLATE LOGIC                              ##
+##---------------------------------------------##
+jobs:
+  - job:
+    displayName: ${{ parameters.displayName }}
+    timeoutInMinutes: ${{ parameters.defaultJobTimeoutInMinutes }}
+    pool:
+      ${{ if ne(parameters.vmImage, '') }}:
+        vmImage: ${{ parameters.vmImage }}
+      ${{ if ne(parameters.poolName, '') }}:
+        name: ${{ parameters.poolName }}
+    steps:
+      # [Checkout Repositories] task(s)
+      #--------------------------------
+      - checkout: self
+      - ${{ if ne(parameters.checkoutRepositories, '') }}:
+          - ${{ each checkoutRepository in parameters.checkoutRepositories }}:
+              - checkout: ${{ checkoutRepository }}
+                fetchDepth: 1 # the depth of commits to ask Git to fetch; if not set defaults to no limit
+                path: 's/${{ checkoutRepository }}'
+
+      # Get Feature Flags
+      #----------------------------
+      - task: PowerShell@2
+        displayName: 'Get Feature Flags'
+        inputs:
+          targetType: inline
+          pwsh: true
+          script: |
+            # Load Settings File
+            $Settings = Get-Content -Path (Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.settingsPath }}') | ConvertFrom-Json -AsHashTable
+
+            # Get Feature Flags
+            $featuresFlagsJSON = $Settings.featureFlags | ConvertTo-Json -Compress
+            Write-Output "##vso[task.setvariable variable=featureFlags]$featuresFlagsJSON"
