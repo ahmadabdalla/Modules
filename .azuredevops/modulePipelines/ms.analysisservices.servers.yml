@@ -58,7 +58,7 @@ stages:
       - job: test_environment
         displayName: Test Environment
         variables:
-          someName: $[ stageDependencies.PlatformSettings.job_platformSettings.outputs['task_featureFlags.featureFlags'] ]
+          someName: $[ stageDependencies.PlatformSettings.job_platformSettings.outputs['task_featureFlags.resourceModules_deployment'] ]
         steps:
           - task: PowerShell@2
             name: task_test_environment
