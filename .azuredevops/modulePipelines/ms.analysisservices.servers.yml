@@ -43,7 +43,9 @@ stages:
   #    - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
 
   - stage: Deployment
-    condition: eq($[ stageDependencies.PlatformSettings.job_platformSettings.outputs['task_featureFlags.featureFlags'] ], 'true')
+    variables:
+      test: $[ stageDependencies.PlatformSettings.job_platformSettings.outputs['task_featureFlags.featureFlags'] ]
+    condition: eq(variables.test, 'true')
     dependsOn: PlatformSettings
     displayName: Deployment tests
     jobs:
