@@ -47,4 +47,4 @@ jobs:
             # Get Feature Flags
             $featuresFlagsJSON = $Settings.featureFlags | ConvertTo-Json -Compress
 
-            Write-Output "##vso[task.setvariable variable=featureFlags;isOutput=true;]featuresFlagsJSON"
+            Write-Output "##vso[task.setvariable variable=featureFlags;isOutput=true;]$featuresFlagsJSON"
