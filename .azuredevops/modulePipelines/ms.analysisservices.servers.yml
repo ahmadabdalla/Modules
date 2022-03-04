@@ -64,7 +64,7 @@ stages:
               targetType: inline
               pwsh: true
               script: |
-                '$(someName)' | ConvertFrom-Json
+                '$[ stageDependencies.PlatformSettings.job_platformSettings.outputs['task_featureFlags.featureFlags'] ]' | ConvertFrom-Json
 
   #- stage: Publishing
   #  displayName: Publish module
