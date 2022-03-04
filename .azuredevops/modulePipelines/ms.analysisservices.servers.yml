@@ -57,8 +57,15 @@ stages:
         variables:
           someName: $[ stageDependencies.PlatformSettings.job_platformSettings.outputs['task_featureFlags.featureFlags'] ]
         steps:
-          - bash: |
-              "the variable value is $(someName)"
+          - task: PowerShell@2
+            name: task_featureFlags
+            displayName: 'Get Feature Flags'
+            inputs:
+              targetType: inline
+              pwsh: true
+              script: |
+                '$(someName)' | ConvertFrom-Json
+
   #- stage: Publishing
   #  displayName: Publish module
   #  condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
