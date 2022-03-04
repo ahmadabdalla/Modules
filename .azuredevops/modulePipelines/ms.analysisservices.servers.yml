@@ -34,7 +34,6 @@ stages:
     displayName: Platform Settings
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.platformSettings.yml
-        name: job_platformSettings
         parameters:
           settingsPath: 'settings.json'
 
@@ -56,7 +55,7 @@ stages:
       - job: test_environment
         displayName: Test Environment
         variables:
-          someName: $[ stageDependencies.PlatformSettings.job_platformSettings.outputs['featureFlags'] ]
+          someName: $[ stageDependencies.PlatformSettings.job_platformSettings.outputs['task_featureFlags.featureFlags'] ]
         steps:
           - bash: |
               "the variable value is $(someName)"

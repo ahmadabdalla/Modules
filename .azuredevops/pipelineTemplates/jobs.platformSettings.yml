@@ -15,6 +15,7 @@ parameters:
 ##---------------------------------------------##
 jobs:
   - job:
+    name: job_platformSettings
     displayName: ${{ parameters.displayName }}
     timeoutInMinutes: ${{ parameters.defaultJobTimeoutInMinutes }}
     pool:
@@ -35,6 +36,7 @@ jobs:
       # Get Feature Flags
       #----------------------------
       - task: PowerShell@2
+        name: task_featureFlags
         displayName: 'Get Feature Flags'
         inputs:
           targetType: inline
