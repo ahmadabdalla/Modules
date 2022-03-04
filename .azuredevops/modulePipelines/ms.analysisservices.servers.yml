@@ -34,6 +34,7 @@ stages:
     displayName: Platform Settings
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.platformSettings.yml
+        name: job_platformSettings
         parameters:
           settingsPath: 'settings.json'
 
@@ -42,16 +43,23 @@ stages:
   #  jobs:
   #    - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
 
-  #- stage: Deployment
-  #  displayName: Deployment tests
-  #  jobs:
-  #    - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
-  #      parameters:
-  #        removeDeployment: '${{ parameters.removeDeployment }}'
-  #        deploymentBlocks:
-  #          - path: $(modulePath)/.parameters/min.parameters.json
-  #          - path: $(modulePath)/.parameters/parameters.json
-
+  - stage: Deployment
+    dependsOn: PlatformSettings
+    displayName: Deployment tests
+    jobs:
+      #- template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+      #  parameters:
+      #    removeDeployment: '${{ parameters.removeDeployment }}'
+      #    deploymentBlocks:
+      #      - path: $(modulePath)/.parameters/min.parameters.json
+      #      - path: $(modulePath)/.parameters/parameters.json
+      - job: test_environment
+        displayName: Test Environment
+        variables:
+          someName: $[ stageDependencies.PlatformSettings.job_platformSettings.outputs['featureFlags'] ]
+        steps:
+          - bash: |
+              "the variable value is $(someName)"
   #- stage: Publishing
   #  displayName: Publish module
   #  condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
