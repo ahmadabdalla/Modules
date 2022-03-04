@@ -45,6 +45,9 @@ jobs:
             $Settings = Get-Content -Path (Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.settingsPath }}') | ConvertFrom-Json -AsHashTable
 
             # Get Feature Flags
-            $featuresFlagsJSON = $Settings.featureFlags | ConvertTo-Json -Compress
-
-            Write-Output "##vso[task.setvariable variable=featureFlags;isOutput=true;]$featuresFlagsJSON"
+            $FeatureFlags = $Settings.featureFlags
+            $FeatureFlagsKeys = $FeatureFlags.Keys
+            foreach($Key in $Settings.featureFlags.Keys){
+              $FeatureFlagState = $Settings.featureFlags[$Key].ToString().ToLower()
+              Write-Output "##vso[task.setvariable variable=$Key;isOutput=true;]$FeatureFlagState"
+            }
