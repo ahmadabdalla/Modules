@@ -75,7 +75,7 @@ stages:
               script: |
                 'my var is $(resourceModules_deployment)'
                 '-----'
-                'my env var is '
+                'my env var is $(sharedVariable1Key)'
 
   #- stage: Publishing
   #  displayName: Publish module
