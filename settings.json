@@ -2,14 +2,14 @@
     "featureFlags": {
         "pipelines_githubActions": true,
         "pipelines_azureDevOps": true,
-        "resourceModules_pesterTests": true,
+        "resourceModules_pesterTests": false,
         "resourceModules_testDeployment": true,
         "resourceModules_deployment": true,
         "resourceModules_dependencyPipeline": true,
         "resourceModules_publishing": true,
-        "resourceModules_publishing_azureDevOpsArtifacts.": true,
-        "resourceModules_publishing_bicepRegistry.": true,
-        "resourceModules_publishing_templateSpecs.": true
+        "resourceModules_publishing_azureDevOpsArtifacts": true,
+        "resourceModules_publishing_bicepRegistry": true,
+        "resourceModules_publishing_templateSpecs": true
     },
     "pipelines": {
         "shared": {

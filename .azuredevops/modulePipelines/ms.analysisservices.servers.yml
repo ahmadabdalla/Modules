@@ -36,34 +36,35 @@ variables:
     value: '/arm/Microsoft.AnalysisServices/servers'
 
 stages:
-  - stage: PlatformSettings
-    displayName: Platform Settings
+  - stage: CheckoutPlatformSettings
+    displayName: Checkout Platform Settings
     jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.platformSettings.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.CheckoutPlatformSettings.yml
         parameters:
-          settingsPath: 'settings.json'
+          settingsPath: '$(System.DefaultWorkingDirectory)/settings.json'
 
-  #- stage: Validation
-  #  displayName: Pester tests
-  #  jobs:
-  #    - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
+  - stage: Validation
+    dependsOn: CheckoutPlatformSettings
+    variables:
+      resourceModules_pesterTests: $[ stageDependencies.CheckoutPlatformSettings.job_CheckoutPlatformSettings.outputs['task_featureFlags.resourceModules_pesterTests'] ]
+    displayName: Pester tests
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
+        condition: eq(variables.resourceModules_pesterTests, 'true')
 
   - stage: Deployment
-    #condition: eq(stageDependencies.PlatformSettings.job_platformSettings.outputs['task_featureFlags.resourceModules_deployment'], 'true')
+    dependsOn: CheckoutPlatformSettings
     variables:
-      resourceModules_deployment: $[ stageDependencies.PlatformSettings.job_platformSettings.outputs['task_featureFlags.resourceModules_deployment'] ]
-    dependsOn: PlatformSettings
+      resourceModules_deployment: $[ stageDependencies.CheckoutPlatformSettings.job_CheckoutPlatformSettings.outputs['task_featureFlags.resourceModules_deployment'] ]
     displayName: Deployment tests
     jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.setEnvironmentVariables.yml
-        parameters:
-          settingsPath: 'settings.json'
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+        condition: eq(variables.resourceModules_deployment, 'true')
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
             - path: $(modulePath)/.parameters/min.parameters.json
-            - path: $(modulePath)/.parameters/parameters.json
+            #- path: $(modulePath)/.parameters/parameters.json
       #- job: test_environment
       #  dependsOn: job_setEnvironmentVariables
       #  displayName: Test Environment

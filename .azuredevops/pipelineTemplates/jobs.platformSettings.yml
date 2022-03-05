@@ -42,7 +42,7 @@ jobs:
           pwsh: true
           script: |
             # Load Settings File
-            $Settings = Get-Content -Path (Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.settingsPath }}') | ConvertFrom-Json -AsHashTable
+            $Settings = Get-Content -Path '${{ parameters.settingsPath }}' | ConvertFrom-Json -AsHashTable
 
             # Get Feature Flags
             $FeatureFlags = $Settings.featureFlags
