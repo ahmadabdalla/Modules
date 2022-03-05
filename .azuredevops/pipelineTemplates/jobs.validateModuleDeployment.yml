@@ -72,6 +72,10 @@ parameters:
 ##---------------------------------------------##
 
 jobs:
+  - job: A
+    steps:
+      - script: echo hello
+
   - ${{ if eq(parameters.resourceModules_deployment, 'true') }}:
       - ${{ each deploymentBlock in parameters.deploymentBlocks }}:
           - job: ${{ deploymentBlock.jobName }}
