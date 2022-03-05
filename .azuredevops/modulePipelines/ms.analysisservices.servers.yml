@@ -65,7 +65,7 @@ stages:
             - path: $(modulePath)/.parameters/min.parameters.json
             #- path: $(modulePath)/.parameters/parameters.json
 
-      - job: A
+      - job: X
         steps:
           - script: echo resourceModules_deployment = $(resourceModules_deployment)
 #
