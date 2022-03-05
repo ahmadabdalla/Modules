@@ -106,7 +106,7 @@ jobs:
               pwsh: true
               script: |
                 # Load used functions
-                . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-AzureDevOpsEnvVariables.ps1')
+                . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'environmentVariables' 'Set-AzureDevOpsEnvVariables.ps1')
 
                 # Load Settings File
                 $Settings = Get-Content -Path (Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.settingsPath }}') | ConvertFrom-Json -AsHashTable

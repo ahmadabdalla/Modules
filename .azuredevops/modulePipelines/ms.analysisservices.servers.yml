@@ -42,9 +42,6 @@ stages:
       - template: /.azuredevops/pipelineTemplates/jobs.platformSettings.yml
         parameters:
           settingsPath: 'settings.json'
-      - template: /.azuredevops/pipelineTemplates/jobs.setEnvironmentVariables.yml
-        parameters:
-          settingsPath: 'settings.json'
 
   #- stage: Validation
   #  displayName: Pester tests
