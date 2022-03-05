@@ -65,7 +65,7 @@ parameters:
   # Azure PowerShell Version parameters
   azurePowerShellVersion: '$(azurePowerShellVersion)'
   preferredAzurePowerShellVersion: '$(preferredAzurePowerShellVersion)'
-  resourceModules_deployment: 'false'
+  #resourceModules_deployment: 'false'
 
 ##---------------------------------------------##
 ## TEMPLATE LOGIC                              ##
@@ -78,7 +78,7 @@ jobs:
 
   - ${{ each deploymentBlock in parameters.deploymentBlocks }}:
       - job: ${{ deploymentBlock.jobName }}
-        condition: eq('${{ parameters.resourceModules_deployment }}', 'true')
+        #condition: eq('${{ parameters.resourceModules_deployment }}', 'true')
 
         ${{ if ne( deploymentBlock.displayName, '') }}:
           displayName: ${{ deploymentBlock.displayName }}
