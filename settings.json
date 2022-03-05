@@ -41,7 +41,7 @@
                 "vstsOrganizationURI": "$(System.CollectionUri)", // Move away from storing this (pass directly to script)
                 "vstsProject": "$(System.TeamProject)", // Move away from storing this (pass directly to script)
                 "modulesRepository": "ResourceModules",
-                "modulePath": "arm/$(moduleName)", // Move away from storing this (pass directly to script)
+                //"modulePath": "arm/$(moduleName)", // Move away from storing this (pass directly to script)
                 "pipelineFunctionsPath": "utilities/pipelines",
                 "defaultLocation": "West Europe",
                 "defaultResourceGroupName": "validation-rg",
