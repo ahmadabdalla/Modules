@@ -47,7 +47,13 @@ jobs:
             # Get Feature Flags
             $FeatureFlags = $Settings.featureFlags
             $FeatureFlagsKeys = $FeatureFlags.Keys
+            Write-Verbose $Settings.featureFlags -Verbose
             foreach($Key in $Settings.featureFlags.Keys){
               $FeatureFlagState = $Settings.featureFlags[$Key].ToString().ToLower()
+              Write-Verbose "Feature ==> $Key = $FeatureFlagState" -Verbose
               Write-Output "##vso[task.setvariable variable=$Key;isOutput=true;]$FeatureFlagState"
             }
+
+            # Get Feature Flags (JSON)
+            $featuresFlagsJSON = $FeatureFlags | ConvertTo-Json -Compress
+            Write-Output "##vso[task.setvariable variable=featuresFlags;isOutput=true;]$featuresFlagsJSON"

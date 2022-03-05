@@ -23,6 +23,16 @@ runs:
         $Settings = Get-Content -Path ${{ inputs.settingsPath }} | ConvertFrom-Json -AsHashTable
 
         # Get Feature Flags
-        $featuresFlagsJSON = $Settings.featureFlags | ConvertTo-Json -Compress
+        $FeatureFlags = $Settings.featureFlags
+        $FeatureFlagsKeys = $FeatureFlags.Keys
+        Write-Verbose $Settings.featureFlags -Verbose
+        foreach($Key in $Settings.featureFlags.Keys){
+          $FeatureFlagState = $Settings.featureFlags[$Key].ToString().ToLower()
+          Write-Verbose "Feature ==> $Key = $FeatureFlagState" -Verbose
+          Write-Output "::set-output name=$Key::$FeatureFlagState"
+        }
+
+        # Get Feature Flags (JSON)
+        $featuresFlagsJSON = $FeatureFlags | ConvertTo-Json -Compress
         Write-Output "::set-output name=featureFlags::$featuresFlagsJSON"
 
