@@ -49,8 +49,8 @@ stages:
       resourceModules_pesterTests: $[ stageDependencies.CheckoutPlatformSettings.job_CheckoutPlatformSettings.outputs['task_featureFlags.resourceModules_pesterTests'] ]
     displayName: Pester tests
     jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
-        condition: eq(variables.resourceModules_pesterTests, 'true')
+      - ${{ if eq(variables.resourceModules_pesterTests, 'true') }}:
+        template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
 
   - stage: Deployment
     dependsOn: CheckoutPlatformSettings
@@ -58,8 +58,8 @@ stages:
       resourceModules_deployment: $[ stageDependencies.CheckoutPlatformSettings.job_CheckoutPlatformSettings.outputs['task_featureFlags.resourceModules_deployment'] ]
     displayName: Deployment tests
     jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
-        condition: eq(variables.resourceModules_deployment, 'true')
+      - ${{ if eq(variables.resourceModules_deployment, 'true') }}:
+        template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
