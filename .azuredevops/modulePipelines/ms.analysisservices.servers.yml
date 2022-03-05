@@ -25,6 +25,12 @@ trigger:
 
 variables:
   #- template: '/.azuredevops/pipelineVariables/global.variables.yml'
+  - vmImage:
+    value: 'ubuntu-latest'
+  - poolName:
+    value: ''
+  - serviceConnection:
+    value: 'AzureConnection'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
     value: '/arm/Microsoft.AnalysisServices/servers'
