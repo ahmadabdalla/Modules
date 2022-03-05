@@ -41,13 +41,13 @@ stages:
         parameters:
           settingsPath: '$(System.DefaultWorkingDirectory)/settings.json'
 
-  - stage: Validation
-    dependsOn: CheckoutPlatformSettings
-    variables:
-      resourceModules_pesterTests: $[ stageDependencies.CheckoutPlatformSettings.job_checkoutPlatformSettings.outputs['task_featureFlags.resourceModules_pesterTests'] ]
-    displayName: Pester tests
-    jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
+  #- stage: Validation
+  #  dependsOn: CheckoutPlatformSettings
+  #  variables:
+  #    resourceModules_pesterTests: $[ stageDependencies.CheckoutPlatformSettings.job_checkoutPlatformSettings.outputs['task_featureFlags.resourceModules_pesterTests'] ]
+  #  displayName: Pester tests
+  #  jobs:
+  #    - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
 
   - stage: Deployment
     dependsOn: CheckoutPlatformSettings
