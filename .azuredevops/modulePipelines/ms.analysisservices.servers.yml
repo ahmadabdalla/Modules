@@ -25,11 +25,11 @@ trigger:
 
 variables:
   #- template: '/.azuredevops/pipelineVariables/global.variables.yml'
-  - vmImage:
+  - name: 'vmImage'
     value: 'ubuntu-latest'
-  - poolName:
+  - name: 'poolName'
     value: ''
-  - serviceConnection:
+  - name: 'serviceConnection'
     value: 'AzureConnection'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
