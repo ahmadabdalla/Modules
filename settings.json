@@ -4,7 +4,7 @@
         "pipelines_azureDevOps": true,
         "resourceModules_pesterTests": false,
         "resourceModules_testDeployment": true,
-        "resourceModules_deployment": false,
+        "resourceModules_deployment": true,
         "resourceModules_dependencyPipeline": true,
         "resourceModules_publishing": false,
         "resourceModules_publishing_azureDevOpsArtifacts": true,
