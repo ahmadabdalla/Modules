@@ -72,10 +72,6 @@ parameters:
 ##---------------------------------------------##
 
 jobs:
-  - job: A
-    steps:
-      - script: echo hello
-
   - ${{ each deploymentBlock in parameters.deploymentBlocks }}:
       - job: ${{ deploymentBlock.jobName }}
         #condition: eq('${{ parameters.resourceModules_deployment }}', 'true')
