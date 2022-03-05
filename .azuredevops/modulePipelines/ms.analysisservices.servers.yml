@@ -73,7 +73,7 @@ stages:
         variables:
           jobVar_resourceModules_deployment: $[ dependencies.job_checkoutPlatformSettings.outputs['task_featureFlags.resourceModules_deployment'] ]
         steps:
-          - script: echo resourceModules_deployment = $[ dependencies.job_checkoutPlatformSettings.outputs['task_featureFlags.resourceModules_deployment'] ]
+          # script: echo resourceModules_deployment = $[ dependencies.job_checkoutPlatformSettings.outputs['task_featureFlags.resourceModules_deployment'] ]
           - script: echo jobVar_resourceModules_deployment = $(jobVar_resourceModules_deployment)
 #
 #- stage: Publishing
