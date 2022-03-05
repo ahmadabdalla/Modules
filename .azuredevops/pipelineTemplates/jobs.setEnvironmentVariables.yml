@@ -53,5 +53,5 @@ jobs:
             $Keys = $KeyValuePair.Keys.split(' ')
             foreach ($Key in $Keys) {
               Write-Verbose "$Key=$($KeyValuePair[$Key])" -Verbose
-              Write-Output "##vso[task.setvariable variable=$Key;isOutput=true;]$($KeyValuePair[$Key])"
+              Write-Output "##vso[task.setvariable variable=$Key]$($KeyValuePair[$Key])"
             }
