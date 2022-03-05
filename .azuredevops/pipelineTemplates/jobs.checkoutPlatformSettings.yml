@@ -14,7 +14,7 @@ parameters:
 ## TEMPLATE LOGIC                              ##
 ##---------------------------------------------##
 jobs:
-  - job: job_platformSettings
+  - job: job_checkoutPlatformSettings
     displayName: ${{ parameters.displayName }}
     timeoutInMinutes: ${{ parameters.defaultJobTimeoutInMinutes }}
     pool:
