@@ -51,7 +51,7 @@ stages:
 
   - stage: Deployment
     dependsOn: CheckoutPlatformSettings
-    condition: eq('$[ stageDependencies.CheckoutPlatformSettings.job_checkoutPlatformSettings.outputs['task_featureFlags.resourceModules_deployment'] ]', 'true')
+    #condition: eq('$[ stageDependencies.CheckoutPlatformSettings.job_checkoutPlatformSettings.outputs['task_featureFlags.resourceModules_deployment'] ]', 'true')
     variables:
       resourceModules_deployment: $[ stageDependencies.CheckoutPlatformSettings.job_checkoutPlatformSettings.outputs['task_featureFlags.resourceModules_deployment'] ]
     displayName: Deployment tests
