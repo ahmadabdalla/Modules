@@ -59,7 +59,7 @@ stages:
       #- ${{ if eq(variables.resourceModules_deployment, 'true') }}:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
-          resourceModules_deployment: '$[variables.resourceModules_deployment]'
+          resourceModules_deployment: $(resourceModules_deployment)
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
             - path: $(modulePath)/.parameters/min.parameters.json
