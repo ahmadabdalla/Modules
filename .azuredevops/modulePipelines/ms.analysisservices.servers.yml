@@ -56,19 +56,15 @@ stages:
       resourceModules_deployment: $[ stageDependencies.CheckoutPlatformSettings.job_checkoutPlatformSettings.outputs['task_featureFlags.resourceModules_deployment'] ]
     displayName: Deployment tests
     jobs:
-      - ${{ if eq(variables.resourceModules_deployment, 'true') }}:
-          - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
-            parameters:
-              removeDeployment: '${{ parameters.removeDeployment }}'
-              deploymentBlocks:
-                - path: $(modulePath)/.parameters/min.parameters.json
-                #- path: $(modulePath)/.parameters/parameters.json
-      - job: XYZ
-        condition: eq(variables.resourceModules_deployment, 'true')
-        steps:
-          - powershell: |
-              Write-Host " stage var = $(resourceModules_deployment)"
-
+      #- ${{ if eq(variables.resourceModules_deployment, 'true') }}:
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+        parameters:
+          resourceModules_deployment: $(resourceModules_deployment)
+          removeDeployment: '${{ parameters.removeDeployment }}'
+          deploymentBlocks:
+            - path: $(modulePath)/.parameters/min.parameters.json
+            #- path: $(modulePath)/.parameters/parameters.json
+#
 #- stage: Publishing
 #  displayName: Publish module
 #  condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
