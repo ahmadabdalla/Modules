@@ -61,17 +61,12 @@ stages:
           settingsPath: '$(System.DefaultWorkingDirectory)/settings.json'
       #- ${{ if eq(variables.resourceModules_deployment, 'true') }}:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
-        dependsOn: job_checkoutPlatformSettings
         parameters:
           resourceModules_deployment: $[ dependencies.job_checkoutPlatformSettings.outputs['task_featureFlags.resourceModules_deployment'] ]
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
             - path: $(modulePath)/.parameters/min.parameters.json
             #- path: $(modulePath)/.parameters/parameters.json
-
-      - job: X
-        steps:
-          - script: echo resourceModules_deployment = $(resourceModules_deployment)
 #
 #- stage: Publishing
 #  displayName: Publish module
