@@ -47,7 +47,7 @@ stages:
       resourceModules_pesterTests: $[ stageDependencies.CheckoutPlatformSettings.job_checkoutPlatformSettings.outputs['task_featureFlags.resourceModules_pesterTests'] ]
     displayName: Pester tests
     jobs:
-      - ${{ if eq($[variables.resourceModules_pesterTests], 'true') }}:
+      - ${{ if eq('$[variables.resourceModules_pesterTests]', 'true') }}:
           - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
 
   - stage: Deployment
