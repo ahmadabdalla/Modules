@@ -10,7 +10,7 @@ parameters:
     type: boolean
     default: false
   - name: resourceModules_deployment
-    displayName: Remove deployed module
+    displayName: Resource Module Deploy
     type: boolean
     default: false
 
