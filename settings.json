@@ -36,7 +36,7 @@
             "variables": {
                 "vmImage": "ubuntu-latest",
                 "poolName": "",
-                "serviceConnection": "CARML-CSU-Tenant-Connection",
+                "serviceConnection": "AzureConnection",
                 "vstsOrganization": "servicescode",
                 "vstsOrganizationURI": "$(System.CollectionUri)", // Move away from storing this (pass directly to script)
                 "vstsProject": "$(System.TeamProject)", // Move away from storing this (pass directly to script)
