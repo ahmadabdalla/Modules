@@ -52,6 +52,9 @@ stages:
     dependsOn: PlatformSettings
     displayName: Deployment tests
     jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.setEnvironmentVariables.yml
+        parameters:
+          settingsPath: 'settings.json'
       #- template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
       #  parameters:
       #    removeDeployment: '${{ parameters.removeDeployment }}'
@@ -59,6 +62,7 @@ stages:
       #      - path: $(modulePath)/.parameters/min.parameters.json
       #      - path: $(modulePath)/.parameters/parameters.json
       - job: test_environment
+        dependsOn: job_setEnvironmentVariables
         displayName: Test Environment
         condition: eq(variables.resourceModules_deployment, 'true')
         steps:
@@ -70,6 +74,8 @@ stages:
               pwsh: true
               script: |
                 'my var is $(resourceModules_deployment)'
+                '-----'
+                'my env var is '
 
   #- stage: Publishing
   #  displayName: Publish module
