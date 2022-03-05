@@ -22,15 +22,8 @@ function Set-AzureDevOpsEnvVariable {
     )
     $Keys = $KeyValuePair.Keys.split(' ')
     foreach ($Key in $Keys) {
-        if (Test-Path $Env:GITHUB_ENV -ErrorAction SilentlyContinue) {
-            Write-Verbose "$Key=$($KeyValuePair[$Key])"
-            Write-Output "$Key=$($KeyValuePair[$Key])" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf-8 -Append
-        }
-        #[System.Environment]::SetEnvironmentVariable($Key, $KeyValuePair[$Key])
-        $EnvironmentVariables += "$Key=$($KeyValuePair[$Key])`n"
-    }
-    # Output environment variable content
-    if ($ReturnVariable) {
-        return [string]$EnvironmentVariables
+        Write-Verbose "$Key=$($KeyValuePair[$Key])" -Verbose
+        Write-Output "##vso[task.setvariable variable=$Key]$($KeyValuePair[$Key])"
     }
 }
+

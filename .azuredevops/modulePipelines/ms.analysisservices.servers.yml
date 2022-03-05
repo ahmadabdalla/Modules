@@ -24,7 +24,7 @@ trigger:
       - '/**/*.md'
 
 variables:
-  - template: '/.azuredevops/pipelineVariables/global.variables.yml'
+  #- template: '/.azuredevops/pipelineVariables/global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
     value: '/arm/Microsoft.AnalysisServices/servers'
@@ -55,30 +55,30 @@ stages:
       - template: /.azuredevops/pipelineTemplates/jobs.setEnvironmentVariables.yml
         parameters:
           settingsPath: 'settings.json'
-      #- template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
-      #  parameters:
-      #    removeDeployment: '${{ parameters.removeDeployment }}'
-      #    deploymentBlocks:
-      #      - path: $(modulePath)/.parameters/min.parameters.json
-      #      - path: $(modulePath)/.parameters/parameters.json
-      - job: test_environment
-        dependsOn: job_setEnvironmentVariables
-        displayName: Test Environment
-        condition: eq(variables.resourceModules_deployment, 'true')
-        steps:
-          - task: PowerShell@2
-            name: task_test_environment
-            displayName: 'Test Environment'
-            inputs:
-              targetType: inline
-              pwsh: true
-              script: |
-                'my var is $(resourceModules_deployment)'
-                '-----'
-                'my env var is $(sharedVariable1Key)'
-
-  #- stage: Publishing
-  #  displayName: Publish module
-  #  condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
-  #  jobs:
-  #    - template: /.azuredevops/pipelineTemplates/jobs.publishModule.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+        parameters:
+          removeDeployment: '${{ parameters.removeDeployment }}'
+          deploymentBlocks:
+            - path: $(modulePath)/.parameters/min.parameters.json
+            - path: $(modulePath)/.parameters/parameters.json
+      #- job: test_environment
+      #  dependsOn: job_setEnvironmentVariables
+      #  displayName: Test Environment
+      #  condition: eq(variables.resourceModules_deployment, 'true')
+      #  steps:
+      #    - task: PowerShell@2
+      #      name: task_test_environment
+      #      displayName: 'Test Environment'
+      #      inputs:
+      #        targetType: inline
+      #        pwsh: true
+      #        script: |
+      #          'my var is $(resourceModules_deployment)'
+      #          '-----'
+      #          'my env var is $(sharedVariable1Key)'
+#
+#- stage: Publishing
+#  displayName: Publish module
+#  condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
+#  jobs:
+#    - template: /.azuredevops/pipelineTemplates/jobs.publishModule.yml

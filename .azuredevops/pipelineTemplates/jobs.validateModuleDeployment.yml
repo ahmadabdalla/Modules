@@ -100,6 +100,22 @@ jobs:
           # [Agent] Prepare environment
           #----------------------------
           - task: PowerShell@2
+            displayName: 'Set Environment Variables'
+            inputs:
+              targetType: inline
+              pwsh: true
+              script: |
+                # Load used functions
+                . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-AzureDevOpsEnvVariables.ps1')
+
+                # Load Settings File
+                $Settings = Get-Content -Path (Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.settingsPath }}') | ConvertFrom-Json -AsHashTable
+                $EnvironmentVariables = ($Settings.pipelines.shared.variables) + ($Settings.pipelines.azureDevOps.variables)
+                Set-AzureDevOpsEnvVariable -KeyValuePair $EnvironmentVariables
+
+          # [Agent] Prepare environment
+          #----------------------------
+          - task: PowerShell@2
             displayName: 'Setup agent'
             inputs:
               targetType: inline
