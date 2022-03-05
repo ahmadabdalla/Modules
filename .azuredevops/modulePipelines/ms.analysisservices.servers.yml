@@ -56,18 +56,18 @@ stages:
       resourceModules_deployment: $[ stageDependencies.CheckoutPlatformSettings.job_checkoutPlatformSettings.outputs['task_featureFlags.resourceModules_deployment'] ]
     displayName: Deployment tests
     jobs:
-      #- ${{ if eq(variables.resourceModules_deployment, 'true') }}:
-      #  template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
-      #  parameters:
-      #    removeDeployment: '${{ parameters.removeDeployment }}'
-      #    deploymentBlocks:
-      #      - path: $(modulePath)/.parameters/min.parameters.json
-      #      #- path: $(modulePath)/.parameters/parameters.json
+      - ${{ if eq(variables.resourceModules_deployment, 'true') }}:
+          - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+            parameters:
+              removeDeployment: '${{ parameters.removeDeployment }}'
+              deploymentBlocks:
+                - path: $(modulePath)/.parameters/min.parameters.json
+                #- path: $(modulePath)/.parameters/parameters.json
       - job: XYZ
         condition: eq(variables.resourceModules_deployment, 'true')
         steps:
           - powershell: |
-              Write-Host " stage var = $(resourceModules_deployment)""
+              Write-Host " stage var = $(resourceModules_deployment)"
 
 #- stage: Publishing
 #  displayName: Publish module
