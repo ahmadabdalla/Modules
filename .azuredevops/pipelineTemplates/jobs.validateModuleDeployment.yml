@@ -109,7 +109,7 @@ jobs:
                 . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'environmentVariables' 'Set-AzureDevOpsEnvVariables.ps1')
 
                 # Load Settings File
-                $Settings = Get-Content -Path (Join-Path '$(System.DefaultWorkingDirectory)' 'settings.json' | ConvertFrom-Json -AsHashTable
+                $Settings = Get-Content -Path (Join-Path '$(System.DefaultWorkingDirectory)' 'settings.json') | ConvertFrom-Json -AsHashTable
                 $EnvironmentVariables = ($Settings.pipelines.shared.variables) + ($Settings.pipelines.azureDevOps.variables)
                 Set-AzureDevOpsEnvVariable -KeyValuePair $EnvironmentVariables
 
