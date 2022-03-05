@@ -29,8 +29,6 @@ variables:
     value: 'ubuntu-latest'
   - name: 'poolName'
     value: ''
-  #- name: 'serviceConnection'
-  #  value: 'AzureConnection'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
     value: '/arm/Microsoft.AnalysisServices/servers'
@@ -65,21 +63,6 @@ stages:
           deploymentBlocks:
             - path: $(modulePath)/.parameters/min.parameters.json
             #- path: $(modulePath)/.parameters/parameters.json
-      #- job: test_environment
-      #  dependsOn: job_setEnvironmentVariables
-      #  displayName: Test Environment
-      #  condition: eq(variables.resourceModules_deployment, 'true')
-      #  steps:
-      #    - task: PowerShell@2
-      #      name: task_test_environment
-      #      displayName: 'Test Environment'
-      #      inputs:
-      #        targetType: inline
-      #        pwsh: true
-      #        script: |
-      #          'my var is $(resourceModules_deployment)'
-      #          '-----'
-      #          'my env var is $(sharedVariable1Key)'
 #
 #- stage: Publishing
 #  displayName: Publish module

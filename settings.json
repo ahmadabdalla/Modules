@@ -4,9 +4,9 @@
         "pipelines_azureDevOps": true,
         "resourceModules_pesterTests": false,
         "resourceModules_testDeployment": true,
-        "resourceModules_deployment": true,
+        "resourceModules_deployment": false,
         "resourceModules_dependencyPipeline": true,
-        "resourceModules_publishing": true,
+        "resourceModules_publishing": false,
         "resourceModules_publishing_azureDevOpsArtifacts": true,
         "resourceModules_publishing_bicepRegistry": true,
         "resourceModules_publishing_templateSpecs": true
