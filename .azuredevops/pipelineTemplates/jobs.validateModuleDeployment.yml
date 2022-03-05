@@ -46,9 +46,9 @@
 
 parameters:
   # Pipeline-related parameters
-  serviceConnection: '$(serviceConnection)'
+  serviceConnection: 'AzureConnection'
   poolName: '$(poolName)'
-  vmImage: '$(vmImage)'
+  vmImage: 'ubuntu-latest'
   defaultJobTimeoutInMinutes: 120
   checkoutRepositories: ''
   dependsOn: []
