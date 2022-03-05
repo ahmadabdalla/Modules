@@ -14,6 +14,7 @@
     "pipelines": {
         "shared": {
             "variables": {
+                "testsPath": "arm/.global",
                 "sharedVariable1Key": "sharedVariable1Value",
                 "sharedVariable2Key": "sharedVariable2Value"
             }
@@ -21,7 +22,7 @@
         "githubActions": {
             "variables": {
                 "defaultLocation": "WestEurope",
-                "resourceGroupNamee": "validation-rg",
+                "resourceGroupName": "validation-rg",
                 "templateSpecsRGName": "artifacts-rg",
                 "templateSpecsRGLocation": "WestEurope",
                 "templateSpecsDescription": "This is a module from the [Common Azure Resource Modules Library]",
@@ -45,37 +46,20 @@
                 "pipelineFunctionsPath": "utilities/pipelines",
                 "defaultLocation": "West Europe",
                 "defaultResourceGroupName": "validation-rg",
-                "azurePowerShellVersion": "latest"
-            }
-        }
-    },
-    "resourceModules": {
-        "pesterTests": {
-            "testsPath": "arm/.global"
-        },
-        "testDeployment": {
-            "resourceGroupName": "validaton-rg",
-            "defaultLocation": "WestEurope"
-        },
-        "deployment": {
-            "resourceGroupName": "validaton-rg",
-            "defaultLocation": "WestEurope"
-        },
-        "publishing": {
-            "azureDevOpsArtifacts": {
+                "templateSpecsDoPublish": true,
+                "templateSpecsRGName": "artifacts-rg",
+                "templateSpecsRGLocation": "West Europe",
+                "templateSpecsDescription": "components",
+                "artifactsFeedDoPublish": true,
                 "vstsFeedName": "ResourceModules",
                 "vstsFeedProject": "$(System.TeamProject)", // Move away from storing this (pass directly to script)
-                "vstsFeedToken": "$(System.AccessToken)" // Move away from storing this (pass directly to script)
-            },
-            "bicepRegistry": {
-                "name": "adpsxxazacrx001",
-                "resourceGroupName": "artifacts-rg",
-                "location": "WestEurope"
-            },
-            "templateSpecs": {
-                "description": "This is a module from the [Common Azure Resource Modules Library]",
-                "resourceGroupName": "artifacts-rg",
-                "location": "WestEurope"
+                "vstsFeedToken": "$(System.AccessToken)", // Move away from storing this (pass directly to script)
+                "bicepRegistryDoPublish": true,
+                "bicepRegistryName": "adpsxxazacrx001",
+                "bicepRegistryRGName": "artifacts-rg",
+                "bicepRegistryRgLocation": "West Europe",
+                "azurePowerShellVersion": "latest",
+                "preferredAzurePowerShellVersion": ""
             }
         }
     },
