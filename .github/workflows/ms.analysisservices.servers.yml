@@ -79,6 +79,9 @@ jobs:
   job_module_pester_validation:
     runs-on: ubuntu-20.04
     name: 'Pester tests'
+    if: ${{ fromJSON(needs.job_platformSettings.outputs.featureFlags).resourceModules_pesterTests == true }}
+    needs:
+      - job_platformSettings
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
