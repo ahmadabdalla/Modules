@@ -1,9 +1,9 @@
-name: 'Prepare CARML GitHub Actions Environment'
-description: 'Prepare CARML GitHub Actions Environment'
+name: 'Set Environment Variables'
+description: 'Set Environment Variables'
 
 inputs:
   settingsPath:
-    description: 'The path to the CARML settings JSON file'
+    description: 'The path to the platform settings JSON file'
     required: true
 
 outputs:
@@ -19,8 +19,6 @@ runs:
       id: set-env-variables
       shell: pwsh
       run: |
-        # Load used functions
-        . "$env:GITHUB_ACTION_PATH/scripts/Set-GitHubEnvVariables.ps1"
 
         # Load Settings File
         $Settings = Get-Content -Path ${{ inputs.settingsPath }} | ConvertFrom-Json -AsHashTable
@@ -29,8 +27,11 @@ runs:
         $Shared_EnvironmentVariables = $Settings.pipelines.shared.variables
         $GitHub_EnvironmentVariables = $Settings.pipelines.githubActions.variables
 
-        # Set Environment Variables
-        $EnvironmentVariables = Set-GitHubEnvVariable -KeyValuePair ($Shared_EnvironmentVariables + $GitHub_EnvironmentVariables)
+        # Process key value pairs as environment variables
+        $KeyValuePair = $Shared_EnvironmentVariables + $GitHub_EnvironmentVariables
+        foreach ($Key in $KeyValuePair.Keys.split(' ')) {
+          Write-Verbose "$Key=$($KeyValuePair[$Key])" -Verbose
+          # Set Environment Variables
+          Write-Output "$Key=$($KeyValuePair[$Key])" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf-8 -Append
+        }
 
-        # Output values to be accessed by next jobs
-        Write-Output "::set-output name=environmentVariables::$EnvironmentVariables"
