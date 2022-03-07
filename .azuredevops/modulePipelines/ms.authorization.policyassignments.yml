@@ -28,6 +28,10 @@ variables:
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
     value: '/arm/Microsoft.Authorization/policyAssignments'
+  - name: 'vmImage'
+    value: 'ubuntu-latest'
+  - name: 'poolName'
+    value: ''
 
 stages:
   - stage: Validation
