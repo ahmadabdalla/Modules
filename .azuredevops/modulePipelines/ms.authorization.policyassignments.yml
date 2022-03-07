@@ -28,16 +28,12 @@ variables:
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
     value: '/arm/Microsoft.Authorization/policyAssignments'
-  - name: 'vmImage'
-    value: 'ubuntu-latest'
-  - name: 'poolName'
-    value: ''
 
 stages:
-  - stage: Validation
-    displayName: Pester tests
-    jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
+  #- stage: Validation
+  #  displayName: Pester tests
+  #  jobs:
+  #    - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
 
   - stage: Deployment
     displayName: Deployment tests
@@ -48,19 +44,19 @@ stages:
           deploymentBlocks:
             - path: $(modulePath)/.parameters/mg.min.parameters.json
               templateFilePath: $(modulePath)/deploy.bicep
-            - path: $(modulePath)/.parameters/mg.parameters.json
-              templateFilePath: $(modulePath)/deploy.bicep
-            - path: $(modulePath)/.parameters/sub.min.parameters.json
-              templateFilePath: $(modulePath)/deploy.bicep
-            - path: $(modulePath)/.parameters/sub.parameters.json
-              templateFilePath: $(modulePath)/deploy.bicep
-            - path: $(modulePath)/.parameters/rg.min.parameters.json
-              templateFilePath: $(modulePath)/deploy.bicep
-            - path: $(modulePath)/.parameters/rg.parameters.json
-              templateFilePath: $(modulePath)/deploy.bicep
+            #- path: $(modulePath)/.parameters/mg.parameters.json
+            #  templateFilePath: $(modulePath)/deploy.bicep
+            #- path: $(modulePath)/.parameters/sub.min.parameters.json
+            #  templateFilePath: $(modulePath)/deploy.bicep
+            #- path: $(modulePath)/.parameters/sub.parameters.json
+            #  templateFilePath: $(modulePath)/deploy.bicep
+            #- path: $(modulePath)/.parameters/rg.min.parameters.json
+            #  templateFilePath: $(modulePath)/deploy.bicep
+            #- path: $(modulePath)/.parameters/rg.parameters.json
+            #  templateFilePath: $(modulePath)/deploy.bicep
 
-  - stage: Publishing
-    displayName: Publish module
-    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
-    jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.publishModule.yml
+  #- stage: Publishing
+  #  displayName: Publish module
+  #  condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
+  #  jobs:
+  #    - template: /.azuredevops/pipelineTemplates/jobs.publishModule.yml
