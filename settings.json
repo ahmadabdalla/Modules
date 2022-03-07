@@ -7,39 +7,37 @@
     "pipelines": {
         "shared": {
             "variables": {
-                "defaultLocation": "WestEurope",
-                "templateSpecsDoPublish": true,
-                "templateSpecsRGName": "artifacts-rg",
-                "templateSpecsRGLocation": "West Europe",
-                "templateSpecsDescription": "This is a module from the [Common Azure Resource Modules Library]",
-                "bicepRegistryDoPublish": true,
-                "bicepRegistryName": "adpcrawlazacrx001",
-                "bicepRegistryRGName": "artifacts-rg",
-                "bicepRegistryRgLocation": "West Europe",
-                "testsPath": "arm/.global",
-                "sharedVariable1Key": "sharedVariable1Value",
-                "sharedVariable2Key": "sharedVariable2Value"
+                "defaultLocation": "WestEurope", // The default location to test deploy resources to
+                "templateSpecsDoPublish": true, // Set to true, if you would like to publish module templates as template specs
+                "templateSpecsRGName": "artifacts-rg", // The name of the resource group to publish to. If the resource group does not exist, it will be created.
+                "templateSpecsRGLocation": "West Europe", // The location of the resource group to publish to
+                "templateSpecsDescription": "This is a module from the [Common Azure Resource Modules Library]", // The description to add to template specs published by this platform
+                "bicepRegistryDoPublish": true, // Set to true, if you would like to publish module templates to a bicep registry
+                "bicepRegistryName": "adpcrawlazacrx001", // The name of the bicep registry (ACR) to publish to. If it does not exist, it will be created.
+                "bicepRegistryRGName": "artifacts-rg", // The resource group that hosts the private bicep registry (ACR)
+                "bicepRegistryRgLocation": "West Europe", // The location of the resource group to publish to
+                "testsPath": "arm/.global"
             }
         },
         "githubActions": {
             "variables": {
-                "resourceGroupName": "validation-rg"
+                "resourceGroupName": "validation-rg" // The default resource group to test deployment resources into
             }
         },
         "azureDevOps": {
             "variables": {
+                "defaultResourceGroupName": "validation-rg", // The default resource group to test deployment resources into
                 "vstsOrganization": "servicescode",
-                "vstsOrganizationURI": "$(System.CollectionUri)",
+                "vstsOrganizationURI": "$(System.CollectionUri)", // The URI of the TFS collection or Azure DevOps organization. For example: https: //dev.azure.com/fabrikam/.
                 "vstsProject": "$(System.TeamProject)",
-                "modulesRepository": "ResourceModules",
+                "modulesRepository": "ResourceModules", // The repository hosting the deployment code (i.e. 'Components'). MUST be provided as a variable with every pipeline
                 "pipelineFunctionsPath": "utilities/pipelines",
-                "defaultResourceGroupName": "validation-rg",
-                "artifactsFeedDoPublish": true,
-                "vstsFeedName": "ResourceModules",
-                "vstsFeedProject": "$(System.TeamProject)",
-                "vstsFeedToken": "$(System.AccessToken)",
-                "azurePowerShellVersion": "latest",
-                "preferredAzurePowerShellVersion": ""
+                "artifactsFeedDoPublish": true, // Set to true, if you would like to publish modules as Universal Packages (in Azure DevOps Artifacts)
+                "vstsFeedName": "ResourceModules", // The name of the Azure DevOps universal packages feed to publish to
+                "vstsFeedProject": "$(System.TeamProject)", // The project that hosts the feed
+                "vstsFeedToken": "$(System.AccessToken)", // The token used to publish universal packages into the feed above
+                "azurePowerShellVersion": "latest", // Should be set to 'latestVersion' unless there is an issue with the Az PowerShell modules. If a specific version needs to be set azurePowerShellVersion should be changed to 'OtherVersion'
+                "preferredAzurePowerShellVersion": "" //If using the latest version of the Az PowerShell modules, set `preferredAzurePowerShellVersion` to an empty string ''. If overriding the Az PowerShell module version, set to the version. Example: '4.4.0'
             }
         }
     },
