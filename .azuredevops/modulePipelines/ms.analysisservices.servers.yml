@@ -34,32 +34,32 @@ variables:
     value: '/arm/Microsoft.AnalysisServices/servers'
 
 stages:
-  - stage: CheckoutPlatformSettings
-    displayName: Checkout Platform Settings
-    jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.checkoutPlatformSettings.yml
-        parameters:
-          settingsPath: '$(System.DefaultWorkingDirectory)/settings.json'
-
-  #- stage: Validation
-  #  dependsOn: CheckoutPlatformSettings
-  #  variables:
-  #    resourceModules_pesterTests: $[ stageDependencies.CheckoutPlatformSettings.job_checkoutPlatformSettings.outputs['task_featureFlags.resourceModules_pesterTests'] ]
-  #  displayName: Pester tests
+  #- stage: CheckoutPlatformSettings
+  #  displayName: Checkout Platform Settings
   #  jobs:
-  #    - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
+  #    - template: /.azuredevops/pipelineTemplates/jobs.checkoutPlatformSettings.yml
+  #      parameters:
+  #        settingsPath: '$(System.DefaultWorkingDirectory)/settings.json'
+
+  - stage: Validation
+    #dependsOn: CheckoutPlatformSettings
+    #variables:
+    #  resourceModules_pesterTests: $[ stageDependencies.CheckoutPlatformSettings.job_checkoutPlatformSettings.outputs['task_featureFlags.resourceModules_pesterTests'] ]
+    displayName: Pester tests
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
 
   - stage: Deployment
-    dependsOn: CheckoutPlatformSettings
+    #dependsOn: CheckoutPlatformSettings
     #condition: eq('$[ stageDependencies.CheckoutPlatformSettings.job_checkoutPlatformSettings.outputs['task_featureFlags.resourceModules_deployment'] ]', 'true')
-    variables:
-      resourceModules_deployment: $[ stageDependencies.CheckoutPlatformSettings.job_checkoutPlatformSettings.outputs['task_featureFlags.resourceModules_deployment'] ]
+    #variables:
+    #  resourceModules_deployment: $[ stageDependencies.CheckoutPlatformSettings.job_checkoutPlatformSettings.outputs['task_featureFlags.resourceModules_deployment'] ]
     displayName: Deployment tests
     jobs:
       #- ${{ if eq($[variables.resourceModules_deployment], 'true') }}:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
-          resourceModules_deployment: $(resourceModules_deployment)
+          #resourceModules_deployment: $(resourceModules_deployment)
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
             - path: $(modulePath)/.parameters/min.parameters.json
