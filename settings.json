@@ -27,7 +27,7 @@
                 "templateSpecsRGLocation": "WestEurope",
                 "templateSpecsDescription": "This is a module from the [Common Azure Resource Modules Library]",
                 "templateSpecsDoPublish": "true",
-                "bicepRegistryName": "adpsxxazacrx001",
+                "bicepRegistryName": "adpcrawlazacrx001",
                 "bicepRegistryRGName": "artifacts-rg",
                 "bicepRegistryRgLocation": "WestEurope",
                 "bicepRegistryDoPublish": "true"
@@ -55,7 +55,7 @@
                 "vstsFeedProject": "$(System.TeamProject)", // Move away from storing this (pass directly to script)
                 "vstsFeedToken": "$(System.AccessToken)", // Move away from storing this (pass directly to script)
                 "bicepRegistryDoPublish": true,
-                "bicepRegistryName": "adpsxxazacrx001",
+                "bicepRegistryName": "adpcrawlazacrx001",
                 "bicepRegistryRGName": "artifacts-rg",
                 "bicepRegistryRgLocation": "West Europe",
                 "azurePowerShellVersion": "latest",
