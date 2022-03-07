@@ -47,7 +47,7 @@ parameters:
   # Pipeline-related parameters
   checkoutRepositories: ''
   displayName: 'Publish module'
-  serviceConnection: '$(serviceConnection)'
+  serviceConnection: 'AzureConnection'
   poolName: '$(poolName)'
   vmImage: '$(vmImage)'
   defaultJobTimeoutInMinutes: 120
