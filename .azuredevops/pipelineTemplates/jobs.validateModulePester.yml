@@ -44,7 +44,7 @@
 
 parameters:
   # Pipeline-related parameters
-  serviceConnection: 'AzureConnection'
+  serviceConnection: '$(serviceConnection)'
   poolName: '$(poolName)'
   vmImage: '$(vmImage)'
   defaultJobTimeoutInMinutes: 120

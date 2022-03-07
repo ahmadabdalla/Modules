@@ -24,7 +24,6 @@ trigger:
       - '/**/*.md'
 
 variables:
-  #- template: '/.azuredevops/pipelineVariables/global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
     value: '/arm/Microsoft.Authorization/policyAssignments'
@@ -44,16 +43,16 @@ stages:
           deploymentBlocks:
             - path: $(modulePath)/.parameters/mg.min.parameters.json
               templateFilePath: $(modulePath)/deploy.bicep
-            #- path: $(modulePath)/.parameters/mg.parameters.json
-            #  templateFilePath: $(modulePath)/deploy.bicep
-            #- path: $(modulePath)/.parameters/sub.min.parameters.json
-            #  templateFilePath: $(modulePath)/deploy.bicep
-            #- path: $(modulePath)/.parameters/sub.parameters.json
-            #  templateFilePath: $(modulePath)/deploy.bicep
-            #- path: $(modulePath)/.parameters/rg.min.parameters.json
-            #  templateFilePath: $(modulePath)/deploy.bicep
-            #- path: $(modulePath)/.parameters/rg.parameters.json
-            #  templateFilePath: $(modulePath)/deploy.bicep
+            - path: $(modulePath)/.parameters/mg.parameters.json
+              templateFilePath: $(modulePath)/deploy.bicep
+            - path: $(modulePath)/.parameters/sub.min.parameters.json
+              templateFilePath: $(modulePath)/deploy.bicep
+            - path: $(modulePath)/.parameters/sub.parameters.json
+              templateFilePath: $(modulePath)/deploy.bicep
+            - path: $(modulePath)/.parameters/rg.min.parameters.json
+              templateFilePath: $(modulePath)/deploy.bicep
+            - path: $(modulePath)/.parameters/rg.parameters.json
+              templateFilePath: $(modulePath)/deploy.bicep
 
   - stage: Publishing
     displayName: Publish module
