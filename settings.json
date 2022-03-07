@@ -1,19 +1,21 @@
 {
     "featureFlags": {
-        "pipelines_githubActions": true,
-        "pipelines_azureDevOps": true,
         "resourceModules_pesterTests": true,
-        "resourceModules_testDeployment": true,
         "resourceModules_deployment": true,
-        "resourceModules_dependencyPipeline": true,
-        "resourceModules_publishing": true,
-        "resourceModules_publishing_azureDevOpsArtifacts": true,
-        "resourceModules_publishing_bicepRegistry": true,
-        "resourceModules_publishing_templateSpecs": true
+        "resourceModules_publishing": true
     },
     "pipelines": {
         "shared": {
             "variables": {
+                "defaultLocation": "WestEurope",
+                "templateSpecsDoPublish": true,
+                "templateSpecsRGName": "artifacts-rg",
+                "templateSpecsRGLocation": "West Europe",
+                "templateSpecsDescription": "This is a module from the [Common Azure Resource Modules Library]",
+                "bicepRegistryDoPublish": true,
+                "bicepRegistryName": "adpcrawlazacrx001",
+                "bicepRegistryRGName": "artifacts-rg",
+                "bicepRegistryRgLocation": "West Europe",
                 "testsPath": "arm/.global",
                 "sharedVariable1Key": "sharedVariable1Value",
                 "sharedVariable2Key": "sharedVariable2Value"
@@ -21,43 +23,21 @@
         },
         "githubActions": {
             "variables": {
-                "defaultLocation": "WestEurope",
-                "resourceGroupName": "validation-rg",
-                "templateSpecsRGName": "artifacts-rg",
-                "templateSpecsRGLocation": "WestEurope",
-                "templateSpecsDescription": "This is a module from the [Common Azure Resource Modules Library]",
-                "templateSpecsDoPublish": "true",
-                "bicepRegistryName": "adpcrawlazacrx001",
-                "bicepRegistryRGName": "artifacts-rg",
-                "bicepRegistryRgLocation": "WestEurope",
-                "bicepRegistryDoPublish": "true"
+                "resourceGroupName": "validation-rg"
             }
         },
         "azureDevOps": {
             "variables": {
-                "vmImage": "ubuntu-latest",
-                "poolName": "",
-                "serviceConnection": "AzureConnection",
                 "vstsOrganization": "servicescode",
-                "vstsOrganizationURI": "$(System.CollectionUri)", // Move away from storing this (pass directly to script)
-                "vstsProject": "$(System.TeamProject)", // Move away from storing this (pass directly to script)
+                "vstsOrganizationURI": "$(System.CollectionUri)",
+                "vstsProject": "$(System.TeamProject)",
                 "modulesRepository": "ResourceModules",
-                //"modulePath": "arm/$(moduleName)", // Move away from storing this (pass directly to script)
                 "pipelineFunctionsPath": "utilities/pipelines",
-                "defaultLocation": "West Europe",
                 "defaultResourceGroupName": "validation-rg",
-                "templateSpecsDoPublish": true,
-                "templateSpecsRGName": "artifacts-rg",
-                "templateSpecsRGLocation": "West Europe",
-                "templateSpecsDescription": "components",
                 "artifactsFeedDoPublish": true,
                 "vstsFeedName": "ResourceModules",
-                "vstsFeedProject": "$(System.TeamProject)", // Move away from storing this (pass directly to script)
-                "vstsFeedToken": "$(System.AccessToken)", // Move away from storing this (pass directly to script)
-                "bicepRegistryDoPublish": true,
-                "bicepRegistryName": "adpcrawlazacrx001",
-                "bicepRegistryRGName": "artifacts-rg",
-                "bicepRegistryRgLocation": "West Europe",
+                "vstsFeedProject": "$(System.TeamProject)",
+                "vstsFeedToken": "$(System.AccessToken)",
                 "azurePowerShellVersion": "latest",
                 "preferredAzurePowerShellVersion": ""
             }
