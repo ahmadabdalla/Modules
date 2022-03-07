@@ -82,15 +82,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths:
-          [
-            'mg.parameters.json',
+        parameterFilePaths: [
+            #'mg.parameters.json',
             'mg.min.parameters.json',
-            'sub.parameters.json',
-            'sub.min.parameters.json',
-            'rg.parameters.json',
-            'rg.min.parameters.json',
           ]
+    #'sub.parameters.json',
+    #'sub.min.parameters.json',
+    #'rg.parameters.json',
+    #'rg.min.parameters.json',
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
