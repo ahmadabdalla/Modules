@@ -8,7 +8,7 @@ param name string
 param description string = ''
 
 @sys.description('Optional. The display name of the policy assignment. Maximum length is 128 characters.')
-@maxLength(64)
+@maxLength(128)
 param displayName string = ''
 
 @sys.description('Required. Specifies the ID of the policy definition or policy set definition being assigned.')
