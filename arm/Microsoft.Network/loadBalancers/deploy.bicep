@@ -68,10 +68,10 @@ var frontendIPConfigurations_var = [for (frontendIPConfiguration, index) in fron
   name: frontendIPConfiguration.name
   properties: {
     subnet: contains(frontendIPConfiguration, 'subnetId') && !empty(frontendIPConfiguration.subnetId) ? {
-        id: frontendIPConfiguration.subnetId
+      id: frontendIPConfiguration.subnetId
     } : null
     publicIPAddress: contains(frontendIPConfiguration, 'publicIPAddressId') && !empty(frontendIPConfiguration.publicIPAddressId) ? {
-        id: frontendIPConfiguration.publicIPAddressId
+      id: frontendIPConfiguration.publicIPAddressId
     } : null
     privateIPAddress: contains(frontendIPConfiguration, 'privateIPAddress') && !empty(frontendIPConfiguration.privateIPAddress) ? frontendIPConfiguration.privateIPAddress : null
     privateIPAddressVersion: contains(frontendIPConfiguration, 'privateIPAddressVersion') ? frontendIPConfiguration.privateIPAddressVersion : 'IPv4'
@@ -160,7 +160,7 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
 }]
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
-  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
     mode: 'Incremental'
     template: {
@@ -242,6 +242,7 @@ resource loadBalancer_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@
 module loadBalancer_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-LoadBalancer-Rbac-${index}'
   params: {
+    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: loadBalancer.id
