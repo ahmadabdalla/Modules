@@ -15,13 +15,13 @@ This module deploys a virtual network subnet.
 | `addressPrefix` | string |  |  | Required. The address prefix for the subnet. |
 | `addressPrefixes` | array | `[]` |  | Optional. List of address prefixes for the subnet. |
 | `applicationGatewayIpConfigurations` | array | `[]` |  | Optional. Application gateway IP configurations of virtual network resource. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `delegations` | array | `[]` |  | Optional. The delegations to enable on the subnet |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `ipAllocations` | array | `[]` |  | Optional. Array of IpAllocation which reference this subnet |
 | `name` | string |  |  | Optional. The Name of the subnet resource. |
 | `natGatewayId` | string |  |  | Optional. The resource ID of the NAT Gateway to use for the subnet |
 | `networkSecurityGroupId` | string |  |  | Optional. The resource ID of the network security group to assign to the subnet |
-| `privateEndpointNetworkPolicies` | string |  | `[Disabled, Enabled, ]` | Optional. enable or disable apply network policies on private end point in the subnet. |
+| `privateEndpointNetworkPolicies` | string |  | `[Disabled, Enabled, ]` | Optional. enable or disable apply network policies on private endpoint in the subnet. |
 | `privateLinkServiceNetworkPolicies` | string |  | `[Disabled, Enabled, ]` | Optional. enable or disable apply network policies on private link service in the subnet. |
 | `routeTableId` | string |  |  | Optional. The resource ID of the route table to assign to the subnet |
 | `serviceEndpointPolicies` | array | `[]` |  | Optional. An array of service endpoint policies. |
