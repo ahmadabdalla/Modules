@@ -83,22 +83,6 @@ jobs:
                 fetchDepth: 1 # the depth of commits to ask Git to fetch; if not set defaults to no limit
                 path: 's/${{ checkoutRepository }}'
 
-      # [Agent] Prepare environment
-      #----------------------------
-      - task: PowerShell@2
-        displayName: 'Set Environment Variables'
-        inputs:
-          targetType: inline
-          pwsh: true
-          script: |
-            # Load used functions
-            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'environmentVariables' 'Set-AzureDevOpsEnvVariables.ps1')
-
-            # Load Settings File
-            $Settings = Get-Content -Path (Join-Path '$(System.DefaultWorkingDirectory)' 'settings.json') | ConvertFrom-Json -AsHashTable
-            $EnvironmentVariables = ($Settings.pipelines.shared.variables) + ($Settings.pipelines.azureDevOps.variables)
-            Set-AzureDevOpsEnvVariable -KeyValuePair $EnvironmentVariables
-
       # [Multi Repo] Support task
       #--------------------------
       - task: PowerShell@2
