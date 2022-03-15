@@ -24,6 +24,7 @@ trigger:
       - '/**/*.md'
 
 variables:
+  - template: 'global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
     value: '/arm/Microsoft.Authorization/policyAssignments'
