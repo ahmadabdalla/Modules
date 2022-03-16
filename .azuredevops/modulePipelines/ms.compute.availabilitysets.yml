@@ -24,7 +24,7 @@ trigger:
       - '/**/*.md'
 
 variables:
-  - template: '../../global.variables.yml'
+  - template: '/.azuredevops/pipelineVariables/global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
     value: '/arm/Microsoft.Compute/availabilitySets'
