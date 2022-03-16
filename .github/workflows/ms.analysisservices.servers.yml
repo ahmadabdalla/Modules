@@ -25,7 +25,6 @@ on:
       - '!utilities/pipelines/dependencies/**'
 
 env:
-  settingsPath: 'settings.json'
   modulePath: 'arm/Microsoft.AnalysisServices/servers'
   workflowPath: '.github/workflows/ms.analysisservices.servers.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
@@ -35,25 +34,6 @@ env:
   DEPLOYMENT_SP_ID: '${{ secrets.DEPLOYMENT_SP_ID }}'
 
 jobs:
-  ###########################
-  #  Platform Settings      #
-  ###########################
-  job_platformSettings:
-    runs-on: ubuntu-20.04
-    name: 'Checkout Platform Settings'
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: 'Get platform settings from [settings.json]'
-        id: settings
-        uses: ./.github/actions/templates/getPlatformSettings
-        with:
-          settingsPath: ${{ env.settingsPath }}
-    outputs:
-      featureFlags: ${{ steps.settings.outputs.featureFlags }}
-
   ############################
   #   SET INPUT PARAMETERS   #
   ############################
@@ -79,9 +59,6 @@ jobs:
   job_module_pester_validation:
     runs-on: ubuntu-20.04
     name: 'Pester tests'
-    if: ${{ fromJSON(needs.job_platformSettings.outputs.featureFlags).resourceModules_pesterTests == true }}
-    needs:
-      - job_platformSettings
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -98,9 +75,7 @@ jobs:
   job_module_deploy_validation:
     runs-on: ubuntu-20.04
     name: 'Deployment tests'
-    if: ${{ fromJSON(needs.job_platformSettings.outputs.featureFlags).resourceModules_deployment == true }}
     needs:
-      - job_platformSettings
       - job_set_workflow_param
       - job_module_pester_validation
     strategy:
@@ -113,9 +88,9 @@ jobs:
         with:
           fetch-depth: 0
       - name: Set environment variables
-        uses: ./.github/actions/templates/setEnvironmentVariables
+        uses: deep-mm/set-variables@v1.0
         with:
-          settingsPath: ${{ env.settingsPath }}
+          variableFileName: 'global.variables'
       - name: 'Using parameter file [${{ matrix.parameterFilePaths }}]'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -132,11 +107,9 @@ jobs:
   ###############
   job_publish_module:
     name: 'Publish module'
-    #if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.event.inputs.prerelease == 'true'
-    if: ${{ fromJSON(needs.job_platformSettings.outputs.featureFlags).resourceModules_publishing == true }}
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.event.inputs.prerelease == 'true'
     runs-on: ubuntu-20.04
     needs:
-      - job_platformSettings
       - job_set_workflow_param
       - job_module_deploy_validation
     steps:
@@ -145,9 +118,9 @@ jobs:
         with:
           fetch-depth: 0
       - name: Set environment variables
-        uses: ./.github/actions/templates/setEnvironmentVariables
+        uses: deep-mm/set-variables@v1.0
         with:
-          settingsPath: ${{ env.settingsPath }}
+          variableFileName: 'global.variables'
       - name: 'Publish module'
         uses: ./.github/actions/templates/publishModule
         with:

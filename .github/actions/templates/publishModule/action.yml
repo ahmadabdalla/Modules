@@ -49,7 +49,6 @@ runs:
             @{ Name = 'Az.Accounts' },
             @{ Name = 'Az.ContainerRegistry' },
             @{ Name = 'Az.Resources' }
-            @{ Name = 'powershell-yaml'; Version = '0.4.2'}
         )
 
         # Set agent up
