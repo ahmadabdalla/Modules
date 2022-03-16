@@ -1,9 +1,4 @@
 {
-    "featureFlags": {
-        "resourceModules_pesterTests": true,
-        "resourceModules_deployment": true,
-        "resourceModules_publishing": true
-    },
     "parameterFileTokens": {
         "tokenPrefix": "<<",
         "tokenSuffix": ">>",
