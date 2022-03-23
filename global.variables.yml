@@ -21,9 +21,10 @@ variables:
   # Validation deployment settings
   ######################################
 
-  defaultLocation: 'West Europe' # The default location to test deploy resources to
-  defaultResourceGroupName: 'validation-rg' # The default resource group to test deployment resources into
+  location: 'West Europe' # The default location to test deploy resources to
+  #defaultResourceGroupName: 'validation-rg' # The default resource group to test deployment resources into
   resourceGroupName: 'validation-rg' # Used by GitHub Actions
+
   ######################################
   # Publish: Template-Spec settings
   ######################################
