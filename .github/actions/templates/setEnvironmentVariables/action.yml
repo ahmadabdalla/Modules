@@ -1,16 +1,32 @@
+#########################################################
+## 'Set environment variables' Composite Action                   ##
+#########################################################
+##
+## This composite action contains the logic to read a YAML key value pair file and convert each key as an environment variable on the runner.
+## Example YAML File content:
+##  key1: 'value1'
+##  key2: 'value2'
+#########################################################
+##
+##-------------------------------------------##
+## ACTION PARAMETERS                         ##
+##-------------------------------------------##
+##
+##   |=======================================================================================================================================================================================================|
+##   | Parameter                | Required | Default | Description                                                                                      | Example                                            |
+##   |--------------------------|----------|---------|--------------------------------------------------------------------------------------------------|----------------------------------------------------|
+##   | variablesPath            | true     | ''      | The path to the YAML file that contains the key value pairs for environment variables            | './global.variables.yml'                           |
+##   |=======================================================================================================================================================================================================|
+##
+##---------------------------------------------##
+
 name: 'Set Environment Variables'
 description: 'Set Environment Variables'
 
 inputs:
   variablesPath:
-    description: 'The path to the variables YAML file'
+    description: 'The path to the YAML file that contains the key value pairs for environment variables'
     required: true
-
-outputs:
-  # Environment Variables
-  environmentVariables:
-    description: 'Environment Variables'
-    value: ${{ steps.set-env-variables.outputs.environmentVariables }}
 
 runs:
   using: 'composite'
@@ -36,21 +52,19 @@ runs:
 
         Write-Output "::endgroup::"
 
-    - name: 'Get and Combine Environment Variables'
+    # [Set environment variables] task(s)
+    # ---------------
+    - name: 'Set environment variables'
       id: set-env-variables
       shell: pwsh
       run: |
+        # Grouping task logs
+        Write-Output "::group::Set environment variables"
 
-        # Load Variables File (YAML)
-        $VariablesYAML = Get-Content -Path ${{ inputs.variablesPath }}
+        # Load used functions
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Convert-YamlDictionaryToFile.ps1')
 
-        # Extract Environment Variables (using powershell-yaml)
-        $KeyValuePair = $VariablesYAML | ConvertFrom-Yaml | Select-Object -ExpandProperty variables
+        # Convert YAML Variable File to Environment Variables
+        Convert-YamlDictionaryToFile -InputFilePath ${{ inputs.variablesPath }} -DictionaryName variables -OutputFilePath $Env:GITHUB_ENV -Verbose
 
-        # Process key value pairs as environment variables
-        foreach ($Key in $KeyValuePair.Keys.split(' ')) {
-          Write-Verbose "$Key=$($KeyValuePair[$Key])" -Verbose
-          # Set Environment Variables
-          Write-Output "$Key=$($KeyValuePair[$Key])" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf-8 -Append
-        }
-
+        Write-Output "::endgroup::"
