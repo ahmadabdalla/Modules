@@ -1,6 +1,6 @@
 ﻿<#
 .SYNOPSIS
-Reads a YAML file that contains a dictionary of key-value pairs within it and outputs a file with the key-value pair in a (key1=value1) format.
+Reads a YAML file that contains a dictionary of key-value pairs within it and outputs a file with the key-value pair in a (key1=value1) format. Suitable for environment variables
 
 .DESCRIPTION
 Accepts input for a YAML file that contains a dictionary, which has key-value pairs (also known as scalars) like key1: 'value1' in each line, and outputs a file with the key-value pair in a (key1=value1) format.
@@ -47,19 +47,22 @@ function Convert-YamlDictionaryToFile {
 
         # Check if the 'powershell-yaml' module is installed
         if (-not (Get-InstalledModule -Name 'powershell-yaml')) {
-            throw "PowerShell module 'powershell-yaml' is required for for serializing and deserializing YAML"
+            throw "PowerShell module 'powershell-yaml' is required for for serializing and deserializing YAML.`nInstall using:`nInstall-Module 'powershell-yaml' -Repository PSGallery"
+        } elseif (-not (Get-Module 'powershell-yaml')) {
+            Import-Module 'powershell-yaml'
         }
 
-        Import-Module -Name 'powershell-yaml'
-
-        # Check if input file path is valid
-        if (-not ($File = Get-Content -Path $InputFilePath -ErrorAction SilentlyContinue)) {
-            throw 'Invalid Input Path'
-        }
-
-        # Check if output file path is valid
-        if (-not (Test-Path $OutputFilePath)) {
-            throw 'Invalid Output Path'
+        try {
+            # Check if input file path is valid
+            if (-not ($File = Get-Content -Path $InputFilePath -ErrorAction SilentlyContinue)) {
+                throw "Invalid Input File Path: $InputFilePath"
+            }
+            # Check if output file path is valid
+            if (-not (Test-Path $OutputFilePath)) {
+                throw "Invalid Output File Path: $OutputFilePath"
+            }
+        } catch {
+            throw $PSitem.Exception.Message
         }
     }
 
