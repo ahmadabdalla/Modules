@@ -24,12 +24,12 @@ Mandatory. The name of the List in the file that contains the key-value pair.
 Mandatory. The path to the file to converted key-value pairs to (format will be key1=value1)
 
 .EXAMPLE
-Convert-YamlList -InputFilePath C:\MyFile.yaml -ListName variables -OutputFilePath C:\MyFile.txt -verbose
+Add-YamlListToFile -InputFilePath C:\MyFile.yaml -ListName variables -OutputFilePath C:\MyFile.txt -verbose
 
 Important: Requires the PowerShell module 'powershell-yaml' to be installed.
 #>
 
-function Convert-YamlList {
+function Add-YamlListToFile {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory)]
@@ -48,16 +48,13 @@ function Convert-YamlList {
         # Check if the 'powershell-yaml' module is installed
         if (-not (Get-InstalledModule -Name 'powershell-yaml')) {
             throw "PowerShell module 'powershell-yaml' is required for for serializing and deserializing YAML.`nInstall using:`nInstall-Module 'powershell-yaml' -Repository PSGallery"
-        } elseif (-not (Get-Module 'powershell-yaml')) {
-            Import-Module 'powershell-yaml'
         }
 
+        # Validate Input and Output Path
         try {
-            # Check if input file path is valid
-            if (-not ($File = Get-Content -Path $InputFilePath -ErrorAction SilentlyContinue)) {
+            if (-not ($InputFileContent = Get-Content -Path $InputFilePath)) {
                 throw "Invalid Input File Path: $InputFilePath"
             }
-            # Check if output file path is valid
             if (-not (Test-Path $OutputFilePath)) {
                 throw "Invalid Output File Path: $OutputFilePath"
             }
@@ -70,12 +67,12 @@ function Convert-YamlList {
 
         # Process List (Hashtable)
         try {
-            $KeyValuePair = $File | ConvertFrom-Yaml | Select-Object -ExpandProperty $ListName
+            $KeyValuePair = $InputFileContent | ConvertFrom-Yaml | Select-Object -ExpandProperty $ListName
             Write-Verbose "Found $($KeyValuePair.Count) Key-Value pairs in List: $ListName" -Verbose
             if (-not $KeyValuePair) {
                 throw "No key-value pairs found in List: $ListName"
             }
-            # Process key value pairs
+            # Process key value pairs in the list
             foreach ($Key in $KeyValuePair.Keys.split(' ')) {
                 Write-Output "$Key=$($KeyValuePair[$Key])" | Out-File -FilePath $OutputFilePath -Encoding utf-8 -Append
             }
