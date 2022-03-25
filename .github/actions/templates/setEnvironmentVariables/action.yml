@@ -2,8 +2,9 @@
 ## 'Set environment variables' Composite Action                   ##
 #########################################################
 ##
-## This composite action contains the logic to read a YAML key value pair file and convert each key as an environment variable on the runner.
+## This composite action contains the logic to read a YAML file containing a list (dictionary) of key-value pairs and convert each key as an environment variable on the runner.
 ## Example YAML File content:
+## listName:
 ##  key1: 'value1'
 ##  key2: 'value2'
 #########################################################
