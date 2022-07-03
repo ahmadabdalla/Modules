@@ -23,7 +23,7 @@ on:
   #     - 'utilities/pipelines/dependencies/**'
 
 env:
-  variablesPath: 'global.variables.yml'
+  variablesPath: 'settings.yml'
   location: 'WestEurope'
   defaultResourceGroupName: 'validation-rg'
   resourceGroupNameArtifacts: 'artifacts-rg'
