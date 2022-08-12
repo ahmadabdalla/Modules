@@ -168,7 +168,7 @@ runs:
           $ConvertTokensInputs.Tokens += $tokenMap
 
           # Swap 'namePrefix' token if empty and provided as a GitHub secret
-          if([String]::IsNullOrEmpty($ConvertTokensInputs.Tokens['namePrefix']){
+          if([String]::IsNullOrEmpty($ConvertTokensInputs.Tokens['namePrefix'])){
             Write-Verbose 'Using [namePrefix] token from GitHub' -Verbose
             $ConvertTokensInputs.Tokens['namePrefix'] = '${{ env.TOKEN_NAMEPREFIX }}'
           }
