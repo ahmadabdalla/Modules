@@ -11,9 +11,9 @@ variables:
   # Local tokens settings
   ######################################
 
-  # the 'token_' prefix will be removed from the key name when the pipelines run.
-  # e.g. if you have a token in your parameter file as <<customKey>>, then the token defined in this file looks like "token_customKey": 'value'
-  token_namePrefix: '' # A 3-5 character length string, included in the resources names, is overridden if provided as GitHub Secret / ADO Variable
+  # the 'localToken_' prefix will be removed from the key name when the pipelines run.
+  # e.g. if you have a token in your parameter file as <<customKey>>, then the token defined in this file looks like "localToken_customKey": 'value'
+  localToken_namePrefix: '' # A 3-5 character length string, included in the resources names, is overridden if provided as GitHub Secret / ADO Variable
 
   ######################################
   # global tokens settings

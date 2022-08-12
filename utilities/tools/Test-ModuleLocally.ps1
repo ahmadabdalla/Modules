@@ -181,8 +181,8 @@ function Test-ModuleLocally {
         $tokenConfiguration.Tokens += $enforcedTokenList
 
         # Add local (source control) tokens
-        foreach ($localToken in ($GlobalVariablesObject.Keys | ForEach-Object { if ($PSItem.contains('token_')) { $PSItem } })) {
-            $tokenConfiguration.Tokens[$localToken.Replace('token_', '', 'OrdinalIgnoreCase')] = $GlobalVariablesObject.$localToken
+        foreach ($localToken in ($GlobalVariablesObject.Keys | ForEach-Object { if ($PSItem.contains('localToken_')) { $PSItem } })) {
+            $tokenConfiguration.Tokens[$localToken.Replace('localToken_', '', 'OrdinalIgnoreCase')] = $GlobalVariablesObject.$localToken
         }
 
         # Add Other Parameter File Tokens (For Testing)

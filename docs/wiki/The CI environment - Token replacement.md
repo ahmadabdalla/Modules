@@ -42,12 +42,12 @@ These are tokens constructed from environment variables, which are defined in th
 These are tokens defined in the Git Repository inside a [settings.yml](https://github.com/Azure/ResourceModules/blob/main/settings.yml) file. This allows creating tokens that are local and updatable via Source Control mechanisms. Here is an example on where these tokens are stored. You can add key-value pairs as required:
 
 ```yml
-token_tokenA: 'foo'
-token_tokenB: 'bar'
+localToken_tokenA: 'foo'
+localToken_tokenB: 'bar'
 
 ```
 
-> **Note:** The CI pipelines automatically removes the `token_` prefix from the name when processing the tokens replacement. This means that your actual token name is `tokenA` and NOT `token_tokenA`.
+> **Note:** The CI pipelines automatically removes the `localToken_` prefix from the name when processing the tokens replacement. This means that your actual token name is `tokenA` and NOT `localToken_tokenA`.
 
 Let's say you'd want to use this token inside a Key Vault parameter file, to deploy the Key Vault with a name that contains this token:
 
@@ -65,7 +65,7 @@ The token prefix `'<<'` and suffix `'>>'` in the above example are also configur
 
 The solution comes with one predefined local token `namePrefix`. This token is leveraged in most of the parameter & test files for deployments. It allows using a consistent naming prefix that is applied to all resources being tested. There are two ways this token can be set and one will take precedence over the other:
 
-1. By updating the value of `token_namePrefix` in the [settings.yml](https://github.com/Azure/ResourceModules/blob/main/settings.yml), which then becomes `namePrefix` when the pipelines run.
+1. By updating the value of `localToken_namePrefix` in the [settings.yml](https://github.com/Azure/ResourceModules/blob/main/settings.yml), which then becomes `namePrefix` when the pipelines run.
 
 1. Creating a GitHub Secret / ADO variable called `TOKEN_NAMEPREFIX`, which then becomes `namePrefix` when the pipelines run. If created as a secret or ADO variable, it will take precedence over the one defined in the [settings.yml](https://github.com/Azure/ResourceModules/blob/main/settings.yml).
 
