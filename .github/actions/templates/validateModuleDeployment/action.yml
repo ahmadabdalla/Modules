@@ -161,16 +161,16 @@ runs:
 
           # Add local (source control) tokens
           $tokenMap = @{}
-          foreach ($token in (Get-ChildItem env: | Where-Object -Property Name -Like "localToken_*")) {
-            $tokenMap += @{ $token.Name.Replace('localToken_','','OrdinalIgnoreCase') = $token.value }
+          foreach ($token in (Get-ChildItem env: | Where-Object -Property Name -Like "token_*")) {
+            $tokenMap += @{ $token.Name.Replace('token_','','OrdinalIgnoreCase') = $token.value }
           }
           Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
           $ConvertTokensInputs.Tokens += $tokenMap
 
-          # Swap 'namePrefix' token if provided as a GitHub secret
-          if(-not [String]::IsNullOrEmpty('${{ env.TOKEN_NAMEPREFIX }}')){
+          # Swap 'namePrefix' token if empty and provided as a GitHub secret
+          if([String]::IsNullOrEmpty($ConvertTokensInputs.Tokens['namePrefix']){
             Write-Verbose 'Using [namePrefix] token from GitHub' -Verbose
-             $ConvertTokensInputs.Tokens['namePrefix'] = '${{ env.TOKEN_NAMEPREFIX }}'
+            $ConvertTokensInputs.Tokens['namePrefix'] = '${{ env.TOKEN_NAMEPREFIX }}'
           }
 
           # Add custom tokens (passed in via the pipeline)
