@@ -2,7 +2,7 @@ metadata name = 'User Assigned Identities'
 metadata description = 'This module deploys a User Assigned Identity.'
 metadata owner = 'Azure/module-maintainers'
 
-@description('Optional. Name of the User Assigned Identity.')
+@description('Optional. Name of the User Assigned Identity resource.')
 param name string = guid(resourceGroup().id)
 
 @description('Optional. Location for all resources.')
