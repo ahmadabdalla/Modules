@@ -448,6 +448,13 @@ function Get-ModulesToPublish {
 
     $modulesToPublish = $modulesToPublish | Sort-Object TemplateFilePath, Version -Descending -Unique
 
+    # Filter modules to publish 'prerelease' only if branch is not main/master
+    $BranchName = Get-GitBranchName
+    if ($BranchName -ne 'refs/heads/main' -or $BranchName -ne 'refs/heads/master') {
+        Write-Verbose "Filtering modules to only publish [prerelease] as current branch [$BranchName] is not [main/master]." -Verbose
+        $modulesToPublish = $modulesToPublish | Where-Object -Property version -Like '*-prerelease'
+    }
+
     if ($modulesToPublish.count -gt 0) {
         Write-Verbose 'Publish the following modules:'-Verbose
         $modulesToPublish | ForEach-Object {
