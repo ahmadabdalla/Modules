@@ -421,7 +421,7 @@ function Get-ModulesToPublish {
                 TemplateFilePath = $ParentTemplateFileToPublish.FullName
             }
 
-            if ($ModuleVersion -notlike '*prerelease') {
+            if ($ModuleVersion -notmatch 'prerelease') {
 
                 # Latest Major,Minor
                 $modulesToPublish += @{
