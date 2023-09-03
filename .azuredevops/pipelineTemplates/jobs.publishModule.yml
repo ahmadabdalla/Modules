@@ -185,8 +185,9 @@ jobs:
             }
 
             # Filter modules to publish 'prerelease' only if branch is not main/master
-            if ('$(Build.SourceBranch)' -ne 'refs/heads/main' -or '$(Build.SourceBranch)' -ne 'refs/heads/master') {
-              Write-Verbose "Filtering modules to only publish [prerelease] as current branch [$(Build.SourceBranch)] is not [main/master]." -Verbose
+            $BranchName = '$(Build.SourceBranch)'
+            if ($BranchName -ne 'refs/heads/main' -or $BranchName -ne 'refs/heads/master') {
+              Write-Verbose "Filtering modules to only publish [prerelease] version as the current branch [$BranchName] is not [main/master]." -Verbose
               $modulesToPublish = $modulesToPublish | Where-Object -Property version -like '*-prerelease'
             }
 
@@ -286,8 +287,9 @@ jobs:
             }
 
             # Filter modules to publish 'prerelease' only if branch is not main/master
-            if ('$(Build.SourceBranch)' -ne 'refs/heads/main' -or '$(Build.SourceBranch)' -ne 'refs/heads/master') {
-              Write-Verbose "Filtering modules to only publish [prerelease] as current branch [$(Build.SourceBranch)] is not [main/master]." -Verbose
+            $BranchName = '$(Build.SourceBranch)'
+            if ($BranchName -ne 'refs/heads/main' -or $BranchName -ne 'refs/heads/master') {
+              Write-Verbose "Filtering modules to only publish [prerelease] version as the current branch [$BranchName] is not [main/master]." -Verbose
               $modulesToPublish = $modulesToPublish | Where-Object -Property version -like '*-prerelease'
             }
 
@@ -389,8 +391,9 @@ jobs:
             }
 
             # Filter modules to publish 'prerelease' only if branch is not main/master
-            if ('$(Build.SourceBranch)' -ne 'refs/heads/main' -or '$(Build.SourceBranch)' -ne 'refs/heads/master') {
-              Write-Verbose "Filtering modules to only publish [prerelease] as current branch [$(Build.SourceBranch)] is not [main/master]." -Verbose
+            $BranchName = '$(Build.SourceBranch)'
+            if ($BranchName -ne 'refs/heads/main' -or $BranchName -ne 'refs/heads/master') {
+              Write-Verbose "Filtering modules to only publish [prerelease] version as the current branch [$BranchName] is not [main/master]." -Verbose
               $modulesToPublish = $modulesToPublish | Where-Object -Property version -like '*-prerelease'
             }
 
