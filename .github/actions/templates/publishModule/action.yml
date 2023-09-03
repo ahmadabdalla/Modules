@@ -142,9 +142,15 @@ runs:
           }
 
           $BranchName = "$env:GITHUB_REF_NAME"
+          $BranchName | Get-Member
+          $BranchName -eq 'main'
+          $BranchName
           if ($BranchName -ne 'main' -or $BranchName -ne 'master') {
             Write-Verbose "Filtering modules to only publish [prerelease] version as the current branch [$BranchName] is not [main/master]." -Verbose
+            $modulesToPublish
             $modulesToPublish = $modulesToPublish | Where-Object -Property version -like '*-prerelease'
+            Write-Verbose "------------------------" -Verbose
+            $modulesToPublish
           }
 
           #################
