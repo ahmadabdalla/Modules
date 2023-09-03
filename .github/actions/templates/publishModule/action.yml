@@ -102,6 +102,7 @@ runs:
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesToPublish.ps1')
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesMissingFromTemplateSpecsRG.ps1')
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Publish-ModuleToTemplateSpecsRG.ps1')
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Confirm-ModulesToPublishOnBranchType.ps1')
 
           $modulesToPublish = @()
 
@@ -141,17 +142,8 @@ runs:
             }
           }
 
-          $BranchName = "$env:GITHUB_REF_NAME"
-          $BranchName | Get-Member
-          $BranchName -eq 'main'
-          $BranchName
-          if ($BranchName -ne 'main' -or $BranchName -ne 'master') {
-            Write-Verbose "Filtering modules to only publish [prerelease] version as the current branch [$BranchName] is not [main/master]." -Verbose
-            $modulesToPublish
-            $modulesToPublish = $modulesToPublish | Where-Object -Property version -like '*-prerelease'
-            Write-Verbose "------------------------" -Verbose
-            $modulesToPublish
-          }
+          # Filter modules to publish 'prerelease' only if branch is not main/master
+          $modulesToPublish = Confirm-ModulesToPublishOnBranchType -modulesToPublish $modulesToPublish
 
           #################
           ##   Publish   ##
