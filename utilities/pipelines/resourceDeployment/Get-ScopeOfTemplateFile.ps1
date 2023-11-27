@@ -43,14 +43,13 @@ function Get-ScopeOfTemplateFile {
             $bicepParamUsingMatch = [regex]::Matches($bicepParamContent, '(?m)^using\s*(''|")(.*)(''|")')
             if (-not $bicepParamUsingMatch.Groups[2].success) {
                 Write-Host 'There has been an error'
-            }
-            else {
-                if(!($bicepParamUsingMatch.Groups[2].value | Split-Path -IsAbsolute )){
-                    $deployBicepPath = $bicepParamUsingMatch.Groups[2].value -replace "\.\.(\\|/)","" -replace "\.(\\|/)",""
-                }else{
+            } else {
+                if (!($bicepParamUsingMatch.Groups[2].value | Split-Path -IsAbsolute )) {
+                    $deployBicepPath = $bicepParamUsingMatch.Groups[2].value -replace '\.\.(\\|/)', '' -replace '\.(\\|/)', ''
+                } else {
                     $deployBicepPath = $bicepParamUsingMatch
                 }
-                $bicepContent = Get-Content $deployBicepPath -raw
+                $bicepContent = Get-Content $deployBicepPath -Raw
                 $bicepScopeMatch = [regex]::Match($bicepContent, '(?m)^\s*targetScope\s*=\s*''(\S+)''')
                 if (-not $bicepScopeMatch.Success) {
                     $deploymentScope = 'resourcegroup'
@@ -59,7 +58,7 @@ function Get-ScopeOfTemplateFile {
                 }
             }
         }
-        '.json'{
+        '.json' {
             # ARM
             $armSchema = (ConvertFrom-Json (Get-Content -Raw -Path $templateFilePath)).'$schema'
             switch -regex ($armSchema) {
@@ -71,7 +70,7 @@ function Get-ScopeOfTemplateFile {
             }
         }
     }
-    
+
     Write-Verbose "Determined deployment scope [$deploymentScope]"
 
     return $deploymentScope
