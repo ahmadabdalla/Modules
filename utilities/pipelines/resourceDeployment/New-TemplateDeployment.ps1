@@ -155,7 +155,7 @@ function New-TemplateDeploymentInner {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
 
         # Load helper
-        . (Join-Path (Get-Item -Path $PSScriptRoot).parent.FullName 'resourceDeployment' 'Get-ScopeOfTemplateFile.ps1')
+        . (Join-Path (Get-Item -Path $PSScriptRoot).parent.FullName 'scripts' 'Get-ScopeOfTemplateFile.ps1') # - a-dempcraig
     }
 
     process {
