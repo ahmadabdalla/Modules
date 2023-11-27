@@ -75,8 +75,7 @@ function Test-TemplateDeployment {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
 
         # Load helper
-        #. (Join-Path (Get-Item -Path $PSScriptRoot).parent.FullName 'sharedScripts' 'Get-ScopeOfTemplateFile.ps1') - a-dempcraig
-        . ./Scripts/Get-ScopeOfTemplateFile.ps1
+        . (Join-Path (Get-Item -Path $PSScriptRoot).parent.FullName 'scripts' 'Get-ScopeOfTemplateFile.ps1') # - a-dempcraig
     }
 
     process {
@@ -88,8 +87,8 @@ function Test-TemplateDeployment {
         if (-not [String]::IsNullOrEmpty($parameterFilePath)) {
             $DeploymentInputs['TemplateParameterFile'] = $parameterFilePath
         }
-        if((Split-Path $TemplateFilePath -Extension) -eq '.bicepparam'){
-            $deploymentInputs = $deploymentInputs + @{bicepParam=$true} #a-dempcraig
+        if ((Split-Path $TemplateFilePath -Extension) -eq '.bicepparam') {
+            $deploymentInputs = $deploymentInputs + @{bicepParam = $true } #a-dempcraig
         }
         $ValidationErrors = $null
 
@@ -155,10 +154,9 @@ function Test-TemplateDeployment {
                 }
                 if ($PSCmdlet.ShouldProcess('Subscription level deployment', 'Test')) {
                     #$res = Test-AzDeployment @DeploymentInputs -Location $Location
-                    if($deploymentInputs.bicepParam){
+                    if ($deploymentInputs.bicepParam) {
                         $res = Test-AzDeployment -TemplateParameterFile $templateFilePath -Location $location -ErrorAction Stop -Verbose # a-dempcraig
-                    }
-                    else{
+                    } else {
                         $deploymentInputs.Remove('bicepParam') #a-dempcraig
                         $res = Test-AzDeployment @DeploymentInputs -Location $location #a-dempcraig
                     }
