@@ -148,7 +148,10 @@ function New-TemplateDeploymentInner {
         [switch] $doNotThrow,
 
         [Parameter(Mandatory = $false)]
-        [int]$retryLimit = 3
+        [int]$retryLimit = 3,
+
+        [Parameter(Mandatory = $false)] #Added a-dempcraig
+        [bool]$bicepParam = $false #Added a-dempcraig
     )
 
     begin {
@@ -159,7 +162,8 @@ function New-TemplateDeploymentInner {
     }
 
     process {
-        $deploymentNamePrefix = Split-Path -Path (Split-Path $templateFilePath -Parent) -LeafBase
+        #$deploymentNamePrefix = Split-Path -Path (Split-Path $templateFilePath -Parent) -LeafBase
+        $deploymentNamePrefix = Split-Path -Path (Split-Path -Path(Split-Path $templateFilePath -Parent) -Parent) -LeafBase # Added a-dempcraig
         if ([String]::IsNullOrEmpty($deploymentNamePrefix)) {
             $deploymentNamePrefix = 'templateDeployment-{0}' -f (Split-Path $templateFilePath -LeafBase)
         }
@@ -254,7 +258,13 @@ function New-TemplateDeploymentInner {
                             $null = Set-AzContext -Subscription $subscriptionId
                         }
                         if ($PSCmdlet.ShouldProcess('Subscription level deployment', 'Create')) {
-                            $res = New-AzSubscriptionDeployment @DeploymentInputs -Location $location
+                            #$res = New-AzSubscriptionDeployment @DeploymentInputs -Location $location
+                            if ($bicepParam) {
+                                $res = New-AzDeployment -TemplateParameterFile $templateFilePath -Location $location -ErrorAction Stop -Verbose # a-dempcraig
+                            } else {
+                                $res = New-AzDeployment @DeploymentInputs -Location $location #a-dempcraig
+                            }
+
                         }
                         break
                     }
@@ -423,6 +433,10 @@ function New-TemplateDeployment {
 
         [Parameter(Mandatory = $false)]
         [int]$retryLimit = 3
+
+
+
+
     )
 
     begin {
@@ -436,6 +450,7 @@ function New-TemplateDeployment {
             $parameterFilePath = Get-ChildItem $parameterFilePath -Recurse -Filter *.json | Select-Object -ExpandProperty FullName
             Write-Verbose "Detected Parameter File(s)/Directory - Count: `n $($parameterFilePath.Count)"
         }
+
 
         ## Iterate through each file
         $deploymentInputObject = @{
@@ -465,6 +480,10 @@ function New-TemplateDeployment {
             }
         } else {
             if ($PSCmdlet.ShouldProcess('Deployment without parameter file', 'Trigger')) {
+                # Check if BicepParam file being passed as Template File.
+                if ((Split-Path $TemplateFilePath -Extension) -eq '.bicepparam') {
+                    $deploymentInputObject = $deploymentInputObject + @{bicepParam = $true } #a-dempcraig
+                }
                 return New-TemplateDeploymentInner @deploymentInputObject
             }
         }

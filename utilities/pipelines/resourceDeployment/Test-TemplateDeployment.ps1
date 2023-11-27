@@ -75,7 +75,8 @@ function Test-TemplateDeployment {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
 
         # Load helper
-        . (Join-Path (Get-Item -Path $PSScriptRoot).parent.FullName 'sharedScripts' 'Get-ScopeOfTemplateFile.ps1')
+        #. (Join-Path (Get-Item -Path $PSScriptRoot).parent.FullName 'sharedScripts' 'Get-ScopeOfTemplateFile.ps1') - a-dempcraig
+        . ./Scripts/Get-ScopeOfTemplateFile.ps1
     }
 
     process {
@@ -87,6 +88,9 @@ function Test-TemplateDeployment {
         if (-not [String]::IsNullOrEmpty($parameterFilePath)) {
             $DeploymentInputs['TemplateParameterFile'] = $parameterFilePath
         }
+        if((Split-Path $TemplateFilePath -Extension) -eq '.bicepparam'){
+            $deploymentInputs = $deploymentInputs + @{bicepParam=$true} #a-dempcraig
+        }
         $ValidationErrors = $null
 
         # Additional parameter object provided yes/no
@@ -96,7 +100,8 @@ function Test-TemplateDeployment {
 
         $deploymentScope = Get-ScopeOfTemplateFile -TemplateFilePath $templateFilePath -Verbose
 
-        $deploymentNamePrefix = Split-Path -Path (Split-Path $templateFilePath -Parent) -LeafBase
+        #$deploymentNamePrefix = Split-Path -Path (Split-Path $templateFilePath -Parent) -LeafBase
+        $deploymentNamePrefix = Split-Path -Path (Split-Path -Path(Split-Path $path -Parent) -Parent) -LeafBase # a-dempcraig
         if ([String]::IsNullOrEmpty($deploymentNamePrefix)) {
             $deploymentNamePrefix = 'templateDeployment-{0}' -f (Split-Path $templateFilePath -LeafBase)
         }
@@ -149,7 +154,15 @@ function Test-TemplateDeployment {
                     $null = Set-AzContext -Subscription $subscriptionId
                 }
                 if ($PSCmdlet.ShouldProcess('Subscription level deployment', 'Test')) {
-                    $res = Test-AzSubscriptionDeployment @DeploymentInputs -Location $Location
+                    #$res = Test-AzDeployment @DeploymentInputs -Location $Location
+                    if($deploymentInputs.bicepParam){
+                        $res = Test-AzDeployment -TemplateParameterFile $templateFilePath -Location $location -ErrorAction Stop -Verbose # a-dempcraig
+                    }
+                    else{
+                        $deploymentInputs.Remove('bicepParam') #a-dempcraig
+                        $res = Test-AzDeployment @DeploymentInputs -Location $location #a-dempcraig
+                    }
+
                 }
                 break
             }
