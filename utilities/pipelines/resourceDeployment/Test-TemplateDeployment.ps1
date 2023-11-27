@@ -76,6 +76,7 @@ function Test-TemplateDeployment {
 
         # Load helper
         . (Join-Path (Get-Item -Path $PSScriptRoot).parent.FullName 'scripts' 'Get-ScopeOfTemplateFile.ps1') # - a-dempcraig
+        #. ./Scripts/Get-ScopeOfTemplateFile.ps1
     }
 
     process {
@@ -100,7 +101,7 @@ function Test-TemplateDeployment {
         $deploymentScope = Get-ScopeOfTemplateFile -TemplateFilePath $templateFilePath -Verbose
 
         #$deploymentNamePrefix = Split-Path -Path (Split-Path $templateFilePath -Parent) -LeafBase
-        $deploymentNamePrefix = Split-Path -Path (Split-Path -Path (Split-Path $templateFilePath -Parent) -Parent) -LeafBase # a-dempcraig
+        $deploymentNamePrefix = Split-Path -Path (Split-Path -Path(Split-Path $templateFilePath -Parent) -Parent) -LeafBase # a-dempcraig
         if ([String]::IsNullOrEmpty($deploymentNamePrefix)) {
             $deploymentNamePrefix = 'templateDeployment-{0}' -f (Split-Path $templateFilePath -LeafBase)
         }
