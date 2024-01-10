@@ -1,4 +1,4 @@
-# User Assigned Identity Federated Identity Credential `[Microsoft.ManagedIdentity/userAssignedIdentities/federatedIdentityCredentials]`
+# User Assigned Identity Federated Identity Credential `[Microsoft.contoso/userassignedidentity/federatedidentitycredential]`
 
 This module deploys a User Assigned Identity Federated Identity Credential.
 
