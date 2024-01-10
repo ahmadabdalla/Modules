@@ -5,7 +5,7 @@ variables:
 
   # Enable or disable CARMLs CI telemetry tracking. Note: This tracks the number of deployments only.
   # See: https://github.com/Azure/ResourceModules/wiki/The%20library%20-%20Module%20design#telemetry
-  enableDefaultTelemetry: true
+  enableDefaultTelemetry: false
 
   ########################
   ##   Token settings   ##
@@ -68,7 +68,7 @@ variables:
   # Private Bicep Registry settings #
   # ------------------------------- #
 
-  bicepRegistryDoPublish: true # Set to true, if you would like to publish module templates to a bicep registry
+  bicepRegistryDoPublish: false # Set to true, if you would like to publish module templates to a bicep registry
   bicepRegistryName: adpsxxazacrx001 # The name of the bicep registry (ACR) to publish to. If it does not exist, it will be created.
   bicepRegistryRGName: 'artifacts-rg' # The resource group that hosts the private bicep registry (ACR)
   bicepRegistryRgLocation: 'West Europe' # The location of the resource group to publish to
@@ -99,7 +99,7 @@ variables:
   # Universal packages settings #
   # --------------------------- #
 
-  artifactsFeedDoPublish: true # Set to true, if you would like to publish modules as Universal Packages (in Azure DevOps Artifacts)
+  artifactsFeedDoPublish: false # Set to true, if you would like to publish modules as Universal Packages (in Azure DevOps Artifacts)
   vstsFeedName: 'carml' # The name of the Azure DevOps universal packages feed to publish to
   vstsFeedProject: '$(System.TeamProject)' # The project that hosts the feed
   vstsFeedToken: $(System.AccessToken) # The token used to publish universal packages into the feed above
