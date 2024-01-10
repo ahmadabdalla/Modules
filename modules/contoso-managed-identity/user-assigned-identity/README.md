@@ -1,6 +1,4 @@
-# User Assigned Identities `[Microsoft.ManagedIdentity/userAssignedIdentities]`
-
-> This module has already been migrated to [AVM](https://github.com/Azure/bicep-registry-modules/tree/main/avm/res). Only the AVM version is expected to receive updates / new features. Please do not work on improving this module in [CARML](https://aka.ms/carml).
+# User Assigned Identities `[Microsoft.contosomanagedidentity/userassignedidentity]`
 
 This module deploys a User Assigned Identity.
 
@@ -27,7 +25,7 @@ The following section provides usage examples for the module, which were used to
 
 >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
->**Note**: To reference the module, please use the following syntax `br:bicep/modules/managed-identity.user-assigned-identity:1.0.0`.
+>**Note**: To reference the module, please use the following syntax `br:bicep/modules/contoso-managed-identity.user-assigned-identity:1.0.0`.
 
 - [Using only defaults](#example-1-using-only-defaults)
 - [Using large parameter set](#example-2-using-large-parameter-set)
@@ -43,7 +41,7 @@ This instance deploys the module with the minimum set of required parameters.
 <summary>via Bicep module</summary>
 
 ```bicep
-module userAssignedIdentity 'br:bicep/modules/managed-identity.user-assigned-identity:1.0.0' = {
+module userAssignedIdentity 'br:bicep/modules/contoso-managed-identity.user-assigned-identity:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-miuaimin'
   params: {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -83,7 +81,7 @@ This instance deploys the module with most of its features enabled.
 <summary>via Bicep module</summary>
 
 ```bicep
-module userAssignedIdentity 'br:bicep/modules/managed-identity.user-assigned-identity:1.0.0' = {
+module userAssignedIdentity 'br:bicep/modules/contoso-managed-identity.user-assigned-identity:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-miuaimax'
   params: {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -207,7 +205,7 @@ This instance deploys the module in alignment with the best-practices of the Azu
 <summary>via Bicep module</summary>
 
 ```bicep
-module userAssignedIdentity 'br:bicep/modules/managed-identity.user-assigned-identity:1.0.0' = {
+module userAssignedIdentity 'br:bicep/modules/contoso-managed-identity.user-assigned-identity:1.0.0' = {
   name: '${uniqueString(deployment().name, location)}-test-miuaiwaf'
   params: {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
