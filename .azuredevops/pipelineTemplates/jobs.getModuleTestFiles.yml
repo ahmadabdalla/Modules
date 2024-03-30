@@ -5,7 +5,7 @@ parameters:
 
   # Logic-related parameters
   modulePath: '$(modulePath)'
-  psRuleFilterRegex: '(defaults|waf-aligned)'
+  psRuleFilterRegex: '$(psRuleFilterRegex)'
 
 ##---------------------------------------------##
 ## TEMPLATE LOGIC                              ##

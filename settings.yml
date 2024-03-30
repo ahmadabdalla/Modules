@@ -34,6 +34,7 @@ variables:
   # ----------------- #
 
   allowPreviewVersionsInAPITests: true # When enabled, preview versions do not fail the API version tests in the `module.tests.ps1` file
+  psRuleFilterRegex: '(defaults|waf-aligned)' # The regex to use to identify test files that are used for PS Rule validation
 
   # Deployment validation #
   # --------------------- #
